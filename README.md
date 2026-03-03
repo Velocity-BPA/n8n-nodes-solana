@@ -8,32 +8,35 @@
 >
 > For licensing information, visit https://velobpa.com/licensing or contact licensing@velobpa.com.
 
-A comprehensive n8n community node for Solana blockchain providing 8 resources and 32+ operations for accounts, transactions, SPL tokens, NFTs, staking, and more. Includes WebSocket triggers for real-time events.
+A comprehensive n8n community node for interacting with the Solana blockchain, featuring 5 resources (Account, Transaction, Token, NFT, Staking) with complete CRUD operations for building decentralized applications, managing digital assets, and automating blockchain workflows.
 
+![n8n Community Node](https://img.shields.io/badge/n8n-Community%20Node-blue)
 ![License](https://img.shields.io/badge/license-BSL--1.1-blue)
-![n8n](https://img.shields.io/badge/n8n-community--node-orange)
-![Solana](https://img.shields.io/badge/blockchain-Solana-purple)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue)
+![Solana](https://img.shields.io/badge/Solana-9945FF?logo=solana)
+![Web3](https://img.shields.io/badge/Web3-F16822?logo=web3.js)
+![Blockchain](https://img.shields.io/badge/Blockchain-121D33?logo=blockchain.com)
 
 ## Features
 
-- **Account Operations**: Check balances, get account info, list token accounts, view transaction history, request airdrops
-- **Transaction Operations**: Send SOL, query transactions, check status, get recent blockhash
-- **SPL Token Operations**: Get token balances, transfer tokens, view supply, create token accounts
-- **NFT Operations (Metaplex)**: Get NFT metadata, list NFTs by owner
-- **Staking Operations**: View stake accounts, check activation status, list validators, get epoch info
-- **Program Operations**: Query program accounts with filters, get account data
-- **Block Operations**: Get blocks by slot, current block height, slot, and block times
-- **Cluster Operations**: Check node health, version, supply statistics, list cluster nodes
-- **Real-time Triggers**: WebSocket subscriptions for account changes, program updates, logs, and more
+- **Account Management** - Create, query, and manage Solana accounts with balance tracking and transaction history
+- **Transaction Processing** - Send, receive, and monitor SOL transfers with comprehensive transaction details
+- **SPL Token Operations** - Create, mint, transfer, and burn SPL tokens with metadata management
+- **NFT Marketplace Integration** - Mint, transfer, and query Solana NFTs with metadata and collection support
+- **Staking Operations** - Delegate, undelegate, and monitor staking rewards across validator networks
+- **Real-time Monitoring** - Track account changes, transaction confirmations, and network events
+- **Multi-Network Support** - Connect to Mainnet, Testnet, and Devnet environments
+- **Batch Operations** - Process multiple transactions and queries efficiently in single workflows
 
 ## Installation
 
 ### Community Nodes (Recommended)
 
-1. Go to **Settings** > **Community Nodes**
-2. Click **Install a community node**
-3. Enter `n8n-nodes-solana`
-4. Click **Install**
+1. Open n8n
+2. Go to **Settings** → **Community Nodes**
+3. Click **Install a community node**
+4. Enter `n8n-nodes-solana`
+5. Click **Install**
 
 ### Manual Installation
 
@@ -45,199 +48,152 @@ npm install n8n-nodes-solana
 ### Development Installation
 
 ```bash
-# 1. Extract the zip file
-unzip n8n-nodes-solana.zip
+git clone https://github.com/Velocity-BPA/n8n-nodes-solana.git
 cd n8n-nodes-solana
-
-# 2. Install dependencies
 npm install
-
-# 3. Build the project
 npm run build
-
-# 4. Copy to n8n nodes directory
-mkdir -p ~/.n8n/nodes
-cp -r . ~/.n8n/nodes/n8n-nodes-solana
-
-# 5. Restart n8n
+mkdir -p ~/.n8n/custom
+ln -s $(pwd) ~/.n8n/custom/n8n-nodes-solana
 n8n start
 ```
 
 ## Credentials Setup
 
-| Field | Description |
-|-------|-------------|
-| **Network** | Select mainnet-beta, testnet, devnet, or custom |
-| **Custom RPC URL** | Your custom RPC endpoint (only for custom network) |
-| **Private Key** | Base58-encoded private key for signing transactions |
-| **Commitment** | processed, confirmed, or finalized |
-| **WebSocket URL** | Custom WebSocket endpoint (optional) |
+| Field | Description | Required |
+|-------|-------------|----------|
+| API Key | Your Solana RPC API key (from Alchemy, QuickNode, etc.) | Yes |
+| Network | Solana network (mainnet-beta, testnet, devnet) | Yes |
+| RPC Endpoint | Custom RPC endpoint URL (optional if using standard networks) | No |
+| Private Key | Base58 encoded private key for transaction signing | Yes (for write operations) |
 
 ## Resources & Operations
 
-### Account Resource
+### 1. Account
 
 | Operation | Description |
 |-----------|-------------|
-| Get Balance | Get SOL balance of an account |
-| Get Account Info | Get full account information |
-| Get Token Accounts | Get all token accounts for an address |
-| Get Transaction History | Get recent transactions for an address |
-| Request Airdrop | Request SOL airdrop (devnet/testnet only) |
+| Get Balance | Retrieve SOL balance for a specific account |
+| Get Account Info | Fetch detailed account information including owner and data |
+| Get Transaction History | List all transactions for an account |
+| Create Account | Generate a new Solana keypair and account |
+| Fund Account | Add SOL to an account (testnet/devnet only) |
+| Get Token Accounts | List all SPL token accounts owned by an address |
 
-### Transaction Resource
-
-| Operation | Description |
-|-----------|-------------|
-| Send SOL | Send SOL to another address |
-| Get Transaction | Get transaction details by signature |
-| Get Transaction Status | Get transaction confirmation status |
-| Get Recent Blockhash | Get recent blockhash for signing |
-
-### SPL Token Resource
+### 2. Transaction
 
 | Operation | Description |
 |-----------|-------------|
-| Get Token Balance | Get SPL token balance for an address |
-| Transfer Token | Transfer SPL tokens to another address |
-| Get Token Supply | Get total supply of an SPL token |
-| Create Token Account | Create associated token account |
-| Get Largest Accounts | Get largest token holders |
+| Send SOL | Transfer SOL between accounts |
+| Get Transaction | Retrieve transaction details by signature |
+| Get Recent Transactions | Fetch latest transactions on the network |
+| Simulate Transaction | Test transaction execution without broadcasting |
+| Get Transaction Status | Check confirmation status of a transaction |
+| Batch Transfer | Send SOL to multiple recipients in one transaction |
 
-### NFT Resource
-
-| Operation | Description |
-|-----------|-------------|
-| Get NFT Metadata | Get metadata for an NFT |
-| Get NFTs by Owner | Get all NFTs owned by an address |
-
-### Stake Resource
+### 3. Token
 
 | Operation | Description |
 |-----------|-------------|
-| Get Stake Accounts | Get stake accounts for an address |
-| Get Stake Activation | Get stake activation status |
-| Get Validators | Get list of validators |
-| Get Epoch Info | Get current epoch information |
+| Create Token | Create a new SPL token mint |
+| Mint Tokens | Mint tokens to a specified account |
+| Transfer Tokens | Send SPL tokens between accounts |
+| Burn Tokens | Destroy tokens from circulation |
+| Get Token Supply | Retrieve total and circulating supply |
+| Get Token Balance | Check SPL token balance for an account |
+| Freeze Account | Freeze a token account (if mint authority) |
+| Thaw Account | Unfreeze a previously frozen token account |
 
-### Program Resource
-
-| Operation | Description |
-|-----------|-------------|
-| Get Program Accounts | Get accounts owned by a program |
-| Get Account Data | Get parsed account data |
-
-### Block Resource
+### 4. NFT
 
 | Operation | Description |
 |-----------|-------------|
-| Get Block | Get block by slot |
-| Get Block Height | Get current block height |
-| Get Slot | Get current slot |
-| Get Block Time | Get block timestamp |
+| Mint NFT | Create and mint a new NFT |
+| Transfer NFT | Send NFT to another wallet |
+| Get NFT Metadata | Retrieve NFT metadata and attributes |
+| Update NFT | Modify NFT metadata (if update authority) |
+| Burn NFT | Permanently destroy an NFT |
+| Get NFTs by Owner | List all NFTs owned by an address |
+| Verify Collection | Add NFT to a verified collection |
 
-### Cluster Resource
+### 5. Staking
 
 | Operation | Description |
 |-----------|-------------|
-| Get Cluster Nodes | Get list of cluster nodes |
-| Get Health | Check RPC node health |
-| Get Version | Get Solana version |
-| Get Supply | Get SOL supply statistics |
-
-## Trigger Node
-
-The Solana Trigger node supports real-time event subscriptions:
-
-- **Account Change**: Trigger when an account balance or data changes
-- **Program Account Change**: Trigger when any account owned by a program changes
-- **Slot Change**: Trigger on every new slot
-- **Root Change**: Trigger when a new root is set
-- **Logs**: Trigger on program log messages
+| Delegate Stake | Delegate SOL to a validator |
+| Undelegate Stake | Remove delegation from a validator |
+| Get Stake Accounts | List all stake accounts for an address |
+| Get Validators | Retrieve list of active validators |
+| Get Staking Rewards | Calculate staking rewards for an epoch |
+| Withdraw Stake | Withdraw undelegated stake |
+| Split Stake | Divide stake account into multiple accounts |
 
 ## Usage Examples
 
-### Get Account Balance
-
-```json
+```javascript
+// Get account balance
 {
-  "resource": "account",
-  "operation": "getBalance",
-  "address": "So11111111111111111111111111111111111111112"
+  "account": "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM",
+  "commitment": "confirmed"
 }
 ```
 
-### Send SOL
-
-```json
+```javascript
+// Send SOL transfer
 {
-  "resource": "transaction",
-  "operation": "sendSol",
-  "toAddress": "RecipientAddressHere",
-  "amount": 0.1
+  "fromAddress": "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM",
+  "toAddress": "4fYNw3dojWmQ4dXtSGE9epjRGy9pFSx62YypT7avPYvA",
+  "amount": 0.1,
+  "memo": "Payment for services"
 }
 ```
 
-### Get NFT Metadata
-
-```json
+```javascript
+// Mint new NFT
 {
-  "resource": "nft",
-  "operation": "getNftMetadata",
-  "mintAddress": "NFTMintAddressHere"
+  "name": "Velocity Art #001",
+  "symbol": "VBA",
+  "description": "Limited edition digital artwork",
+  "image": "https://arweave.net/abc123",
+  "attributes": [
+    {"trait_type": "Color", "value": "Blue"},
+    {"trait_type": "Rarity", "value": "Legendary"}
+  ],
+  "royaltyPercent": 5
 }
 ```
 
-## Networks
-
-| Network | RPC URL |
-|---------|---------|
-| Mainnet | https://api.mainnet-beta.solana.com |
-| Testnet | https://api.testnet.solana.com |
-| Devnet | https://api.devnet.solana.com |
-
-For production use, consider dedicated RPC providers:
-- [Helius](https://helius.xyz)
-- [QuickNode](https://quicknode.com)
-- [Alchemy](https://alchemy.com)
+```javascript
+// Delegate stake to validator
+{
+  "stakeAccount": "StakeAccount1111111111111111111111111111111",
+  "validatorAddress": "Vote111111111111111111111111111111111111111",
+  "amount": 10.5,
+  "lockup": {
+    "epoch": 500,
+    "custodian": null
+  }
+}
+```
 
 ## Error Handling
 
-The node provides descriptive error messages for common issues:
-
-- **Invalid Solana address**: Check the base58 encoding
-- **Insufficient funds**: Not enough SOL for transaction + fees
-- **Transaction expired**: Blockhash is too old, retry the transaction
-- **Private key required**: Operation needs signing capability
-- **Airdrop unavailable on mainnet**: Use devnet or testnet
-
-## Security Best Practices
-
-- Never share your private key
-- Use separate wallets for testing and production
-- Consider using environment variables for credentials
-- Use dedicated RPC endpoints for production workloads
+| Error | Description | Solution |
+|-------|-------------|----------|
+| Insufficient Funds | Account balance too low for transaction | Verify account has enough SOL for transaction and fees |
+| Invalid Signature | Transaction signature verification failed | Check private key matches the sender address |
+| Blockhash Not Found | Transaction blockhash is too old | Retry with a recent blockhash from the network |
+| Account Not Found | Specified account doesn't exist on-chain | Verify account address and network selection |
+| Token Account Not Found | SPL token account doesn't exist | Create associated token account before transfer |
+| RPC Rate Limit | API rate limit exceeded | Use API key or reduce request frequency |
 
 ## Development
 
 ```bash
-# Install dependencies
 npm install
-
-# Build
 npm run build
-
-# Watch mode
-npm run dev
-
-# Lint
-npm run lint
-
-# Format
-npm run format
-
-# Test
 npm test
+npm run lint
+npm run dev
 ```
 
 ## Author
@@ -254,41 +210,24 @@ This n8n community node is licensed under the **Business Source License 1.1**.
 Permitted for personal, educational, research, and internal business use.
 
 ### Commercial Use
-Use of this node within any SaaS, PaaS, hosted platform, managed service,
-or paid automation offering requires a commercial license.
+Use of this node within any SaaS, PaaS, hosted platform, managed service, or paid automation offering requires a commercial license.
 
-For licensing inquiries:
-**licensing@velobpa.com**
+For licensing inquiries: **licensing@velobpa.com**
 
 See [LICENSE](LICENSE), [COMMERCIAL_LICENSE.md](COMMERCIAL_LICENSE.md), and [LICENSING_FAQ.md](LICENSING_FAQ.md) for details.
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome! Please ensure:
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+1. Code follows existing style conventions
+2. All tests pass (`npm test`)
+3. Linting passes (`npm run lint`)
+4. Documentation is updated for new features
+5. Commit messages are descriptive
 
 ## Support
 
 - **Issues**: [GitHub Issues](https://github.com/Velocity-BPA/n8n-nodes-solana/issues)
-- **Documentation**: [Solana Docs](https://docs.solana.com)
-- **n8n Community**: [n8n Community Forum](https://community.n8n.io)
-- **Author Website**: [velobpa.com](https://velobpa.com)
-
-## Acknowledgments
-
-- [Solana Foundation](https://solana.com) for the blockchain platform
-- [Metaplex](https://metaplex.com) for NFT standards
-- [n8n](https://n8n.io) for the workflow automation platform
-
-## Changelog
-
-### v1.0.0
-- Initial release
-- Full support for accounts, transactions, SPL tokens, NFTs, staking, programs, blocks, and cluster operations
-- WebSocket trigger node for real-time events
-- Metaplex NFT integration
+- **Solana Documentation**: [docs.solana.com](https://docs.solana.com)
+- **Solana Developer Discord**: [solana.com/discord](https://solana.com/discord)
