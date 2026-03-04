@@ -8,25 +8,25 @@
 >
 > For licensing information, visit https://velobpa.com/licensing or contact licensing@velobpa.com.
 
-A comprehensive n8n community node for interacting with the Solana blockchain, featuring 5 resources (Account, Transaction, Token, NFT, Staking) with complete CRUD operations for building decentralized applications, managing digital assets, and automating blockchain workflows.
+A comprehensive n8n community node for integrating with the Solana blockchain, featuring 5 core resources: Account, Transaction, Token, Block, and Staking. Enables seamless automation of Solana operations including balance queries, transaction monitoring, token transfers, block data retrieval, and staking management within your n8n workflows.
 
 ![n8n Community Node](https://img.shields.io/badge/n8n-Community%20Node-blue)
 ![License](https://img.shields.io/badge/license-BSL--1.1-blue)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue)
-![Solana](https://img.shields.io/badge/Solana-9945FF?logo=solana)
-![Web3](https://img.shields.io/badge/Web3-F16822?logo=web3.js)
-![Blockchain](https://img.shields.io/badge/Blockchain-121D33?logo=blockchain.com)
+![Solana](https://img.shields.io/badge/Solana-Web3-purple)
+![RPC](https://img.shields.io/badge/RPC-JSON--RPC%202.0-green)
+![Mainnet](https://img.shields.io/badge/Network-Mainnet%2FDevnet-orange)
 
 ## Features
 
-- **Account Management** - Create, query, and manage Solana accounts with balance tracking and transaction history
-- **Transaction Processing** - Send, receive, and monitor SOL transfers with comprehensive transaction details
-- **SPL Token Operations** - Create, mint, transfer, and burn SPL tokens with metadata management
-- **NFT Marketplace Integration** - Mint, transfer, and query Solana NFTs with metadata and collection support
-- **Staking Operations** - Delegate, undelegate, and monitor staking rewards across validator networks
-- **Real-time Monitoring** - Track account changes, transaction confirmations, and network events
-- **Multi-Network Support** - Connect to Mainnet, Testnet, and Devnet environments
-- **Batch Operations** - Process multiple transactions and queries efficiently in single workflows
+- **Account Management** - Query account balances, token holdings, and account information across Solana networks
+- **Transaction Operations** - Send SOL transfers, monitor transaction status, and retrieve transaction history
+- **Token Integration** - Manage SPL tokens, check token balances, and execute token transfers
+- **Block Data Access** - Fetch block information, retrieve block heights, and monitor blockchain state
+- **Staking Management** - Query stake accounts, monitor validator performance, and manage staking operations
+- **Multi-Network Support** - Compatible with Mainnet, Devnet, and Testnet environments
+- **Real-time Monitoring** - Support for account change subscriptions and transaction confirmations
+- **Error Resilience** - Comprehensive error handling with automatic retry mechanisms
 
 ## Installation
 
@@ -61,10 +61,10 @@ n8n start
 
 | Field | Description | Required |
 |-------|-------------|----------|
-| API Key | Your Solana RPC API key (from Alchemy, QuickNode, etc.) | Yes |
-| Network | Solana network (mainnet-beta, testnet, devnet) | Yes |
-| RPC Endpoint | Custom RPC endpoint URL (optional if using standard networks) | No |
-| Private Key | Base58 encoded private key for transaction signing | Yes (for write operations) |
+| **RPC Endpoint** | Solana RPC endpoint URL (e.g., https://api.mainnet-beta.solana.com) | Yes |
+| **API Key** | RPC provider API key for authenticated requests | Yes |
+| **Network** | Target network (mainnet-beta, devnet, testnet) | Yes |
+| **Private Key** | Base58 encoded private key for transaction signing (optional) | No |
 
 ## Resources & Operations
 
@@ -72,119 +72,110 @@ n8n start
 
 | Operation | Description |
 |-----------|-------------|
-| Get Balance | Retrieve SOL balance for a specific account |
-| Get Account Info | Fetch detailed account information including owner and data |
-| Get Transaction History | List all transactions for an account |
-| Create Account | Generate a new Solana keypair and account |
-| Fund Account | Add SOL to an account (testnet/devnet only) |
-| Get Token Accounts | List all SPL token accounts owned by an address |
+| **Get Balance** | Retrieve SOL balance for a specific account address |
+| **Get Account Info** | Fetch detailed account information including owner and data |
+| **Get Token Accounts** | List all token accounts owned by an address |
+| **Get Token Balance** | Check balance of a specific SPL token for an account |
+| **Get Transaction History** | Retrieve transaction history for an account |
+| **Subscribe to Changes** | Monitor account changes in real-time |
 
 ### 2. Transaction
 
 | Operation | Description |
 |-----------|-------------|
-| Send SOL | Transfer SOL between accounts |
-| Get Transaction | Retrieve transaction details by signature |
-| Get Recent Transactions | Fetch latest transactions on the network |
-| Simulate Transaction | Test transaction execution without broadcasting |
-| Get Transaction Status | Check confirmation status of a transaction |
-| Batch Transfer | Send SOL to multiple recipients in one transaction |
+| **Send SOL** | Transfer SOL from one account to another |
+| **Get Transaction** | Retrieve transaction details by signature |
+| **Get Transaction Status** | Check confirmation status of a transaction |
+| **Get Recent Transactions** | Fetch recent transactions from the network |
+| **Simulate Transaction** | Simulate transaction execution without sending |
+| **Get Transaction Count** | Retrieve total transaction count for the network |
 
 ### 3. Token
 
 | Operation | Description |
 |-----------|-------------|
-| Create Token | Create a new SPL token mint |
-| Mint Tokens | Mint tokens to a specified account |
-| Transfer Tokens | Send SPL tokens between accounts |
-| Burn Tokens | Destroy tokens from circulation |
-| Get Token Supply | Retrieve total and circulating supply |
-| Get Token Balance | Check SPL token balance for an account |
-| Freeze Account | Freeze a token account (if mint authority) |
-| Thaw Account | Unfreeze a previously frozen token account |
+| **Transfer Token** | Send SPL tokens between accounts |
+| **Get Token Info** | Retrieve metadata and supply information for a token |
+| **Create Token Account** | Create a new token account for holding specific tokens |
+| **Get Token Supply** | Check total and circulating supply of a token |
+| **Get Token Holders** | List accounts holding a specific token |
+| **Burn Tokens** | Burn tokens from a token account |
 
-### 4. NFT
+### 4. Block
 
 | Operation | Description |
 |-----------|-------------|
-| Mint NFT | Create and mint a new NFT |
-| Transfer NFT | Send NFT to another wallet |
-| Get NFT Metadata | Retrieve NFT metadata and attributes |
-| Update NFT | Modify NFT metadata (if update authority) |
-| Burn NFT | Permanently destroy an NFT |
-| Get NFTs by Owner | List all NFTs owned by an address |
-| Verify Collection | Add NFT to a verified collection |
+| **Get Block** | Retrieve block data by slot number |
+| **Get Block Height** | Get current block height of the network |
+| **Get Block Time** | Fetch timestamp for a specific block |
+| **Get Recent Blocks** | List recent blocks with transaction counts |
+| **Get Block Production** | Monitor block production by validators |
+| **Get Slot Leaders** | Retrieve slot leader schedule |
 
 ### 5. Staking
 
 | Operation | Description |
 |-----------|-------------|
-| Delegate Stake | Delegate SOL to a validator |
-| Undelegate Stake | Remove delegation from a validator |
-| Get Stake Accounts | List all stake accounts for an address |
-| Get Validators | Retrieve list of active validators |
-| Get Staking Rewards | Calculate staking rewards for an epoch |
-| Withdraw Stake | Withdraw undelegated stake |
-| Split Stake | Divide stake account into multiple accounts |
+| **Get Stake Accounts** | List stake accounts for a wallet address |
+| **Create Stake Account** | Create a new stake account |
+| **Delegate Stake** | Delegate stake to a validator |
+| **Withdraw Stake** | Withdraw stake from a stake account |
+| **Get Validator Info** | Retrieve validator details and performance metrics |
+| **Get Staking Rewards** | Calculate staking rewards for an epoch |
 
 ## Usage Examples
 
 ```javascript
-// Get account balance
-{
-  "account": "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM",
-  "commitment": "confirmed"
-}
+// Get SOL balance for an account
+const accountBalance = await $('Solana').getBalance({
+  address: '9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM'
+});
+console.log(`Balance: ${accountBalance.value / 1e9} SOL`);
 ```
 
 ```javascript
-// Send SOL transfer
-{
-  "fromAddress": "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM",
-  "toAddress": "4fYNw3dojWmQ4dXtSGE9epjRGy9pFSx62YypT7avPYvA",
-  "amount": 0.1,
-  "memo": "Payment for services"
-}
+// Send SOL transaction
+const transaction = await $('Solana').sendSOL({
+  from: '9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM',
+  to: 'HN7cABqLq46Es1jh92dQQisAq662SmxELLLsHHe4YWrH',
+  amount: 0.1 * 1e9, // 0.1 SOL in lamports
+  commitment: 'confirmed'
+});
+console.log(`Transaction: ${transaction.signature}`);
 ```
 
 ```javascript
-// Mint new NFT
-{
-  "name": "Velocity Art #001",
-  "symbol": "VBA",
-  "description": "Limited edition digital artwork",
-  "image": "https://arweave.net/abc123",
-  "attributes": [
-    {"trait_type": "Color", "value": "Blue"},
-    {"trait_type": "Rarity", "value": "Legendary"}
-  ],
-  "royaltyPercent": 5
-}
+// Transfer SPL tokens
+const tokenTransfer = await $('Solana').transferToken({
+  mint: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', // USDC
+  from: '9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM',
+  to: 'HN7cABqLq46Es1jh92dQQisAq662SmxELLLsHHe4YWrH',
+  amount: 10 * 1e6, // 10 USDC
+  decimals: 6
+});
 ```
 
 ```javascript
-// Delegate stake to validator
-{
-  "stakeAccount": "StakeAccount1111111111111111111111111111111",
-  "validatorAddress": "Vote111111111111111111111111111111111111111",
-  "amount": 10.5,
-  "lockup": {
-    "epoch": 500,
-    "custodian": null
-  }
-}
+// Get current block information
+const blockInfo = await $('Solana').getBlock({
+  slot: 'finalized',
+  encoding: 'json',
+  transactionDetails: 'signatures',
+  maxSupportedTransactionVersion: 0
+});
+console.log(`Block ${blockInfo.slot} has ${blockInfo.transactions.length} transactions`);
 ```
 
 ## Error Handling
 
 | Error | Description | Solution |
 |-------|-------------|----------|
-| Insufficient Funds | Account balance too low for transaction | Verify account has enough SOL for transaction and fees |
-| Invalid Signature | Transaction signature verification failed | Check private key matches the sender address |
-| Blockhash Not Found | Transaction blockhash is too old | Retry with a recent blockhash from the network |
-| Account Not Found | Specified account doesn't exist on-chain | Verify account address and network selection |
-| Token Account Not Found | SPL token account doesn't exist | Create associated token account before transfer |
-| RPC Rate Limit | API rate limit exceeded | Use API key or reduce request frequency |
+| **Invalid API Key** | Authentication failed with RPC provider | Verify API key in credentials and check provider status |
+| **Insufficient Balance** | Account lacks funds for transaction | Check account balance and ensure sufficient SOL for fees |
+| **Invalid Address** | Provided address is not a valid Solana address | Validate address format using base58 encoding |
+| **Network Timeout** | RPC request exceeded timeout limit | Retry request or switch to different RPC endpoint |
+| **Transaction Failed** | Transaction simulation or execution failed | Check transaction parameters and account permissions |
+| **Rate Limited** | Too many requests to RPC endpoint | Implement request throttling or upgrade RPC plan |
 
 ## Development
 
@@ -229,5 +220,5 @@ Contributions are welcome! Please ensure:
 ## Support
 
 - **Issues**: [GitHub Issues](https://github.com/Velocity-BPA/n8n-nodes-solana/issues)
-- **Solana Documentation**: [docs.solana.com](https://docs.solana.com)
-- **Solana Developer Discord**: [solana.com/discord](https://solana.com/discord)
+- **Solana Documentation**: [Solana RPC API Documentation](https://docs.solana.com/api)
+- **Developer Resources**: [Solana Cookbook](https://solanacookbook.com)
