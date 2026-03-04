@@ -2,7 +2,9 @@
   "compilerOptions": {
     "target": "es2019",
     "module": "commonjs",
-    "lib": ["es2019"],
+    "lib": [
+      "es2019"
+    ],
     "outDir": "./dist",
     "rootDir": "./",
     "strict": true,
@@ -11,7 +13,9 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "declaration": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "include": [
     "nodes/**/*",
