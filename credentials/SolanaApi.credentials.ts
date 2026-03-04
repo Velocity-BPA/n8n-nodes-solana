@@ -9,34 +9,12 @@ export class SolanaApi implements ICredentialType {
 	documentationUrl = 'https://docs.solana.com/api';
 	properties: INodeProperties[] = [
 		{
-			displayName: 'RPC Endpoint URL',
+			displayName: 'RPC URL',
 			name: 'rpcUrl',
 			type: 'string',
 			default: 'https://api.mainnet-beta.solana.com',
 			required: true,
-			description: 'The Solana RPC endpoint URL',
-		},
-		{
-			displayName: 'Authentication Type',
-			name: 'authType',
-			type: 'options',
-			options: [
-				{
-					name: 'None (Public Endpoint)',
-					value: 'none',
-				},
-				{
-					name: 'API Key (Header)',
-					value: 'apiKey',
-				},
-				{
-					name: 'Bearer Token',
-					value: 'bearerToken',
-				},
-			],
-			default: 'none',
-			required: true,
-			description: 'The authentication method to use',
+			description: 'The Solana RPC endpoint URL. Use public endpoints or your RPC provider URL.',
 		},
 		{
 			displayName: 'API Key',
@@ -46,42 +24,28 @@ export class SolanaApi implements ICredentialType {
 				password: true,
 			},
 			default: '',
-			required: false,
-			displayOptions: {
-				show: {
-					authType: ['apiKey'],
-				},
-			},
-			description: 'API key for authenticated requests',
+			description: 'API key for authenticated RPC providers (optional for public endpoints)',
 		},
 		{
-			displayName: 'Header Name',
-			name: 'headerName',
-			type: 'string',
-			default: 'X-API-Key',
-			required: false,
-			displayOptions: {
-				show: {
-					authType: ['apiKey'],
+			displayName: 'Network',
+			name: 'network',
+			type: 'options',
+			options: [
+				{
+					name: 'Mainnet Beta',
+					value: 'mainnet-beta',
 				},
-			},
-			description: 'Header name for the API key (e.g., X-API-Key, Authorization)',
-		},
-		{
-			displayName: 'Bearer Token',
-			name: 'bearerToken',
-			type: 'string',
-			typeOptions: {
-				password: true,
-			},
-			default: '',
-			required: false,
-			displayOptions: {
-				show: {
-					authType: ['bearerToken'],
+				{
+					name: 'Testnet',
+					value: 'testnet',
 				},
-			},
-			description: 'Bearer token for authenticated requests',
+				{
+					name: 'Devnet',
+					value: 'devnet',
+				},
+			],
+			default: 'mainnet-beta',
+			description: 'The Solana network to connect to',
 		},
 	];
 }
