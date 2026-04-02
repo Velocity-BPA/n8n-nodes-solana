@@ -41,7 +41,6 @@ export class Solana implements INodeType {
       },
     ],
     properties: [
-      // Resource selector
       {
         displayName: 'Resource',
         name: 'resource',
@@ -57,62 +56,37 @@ export class Solana implements INodeType {
             value: 'transaction',
           },
           {
-            name: 'Token',
-            value: 'token',
-          },
-          {
             name: 'Block',
             value: 'block',
           },
           {
-            name: 'Staking',
-            value: 'staking',
+            name: 'Token',
+            value: 'token',
+          },
+          {
+            name: 'Program',
+            value: 'program',
+          },
+          {
+            name: 'Validator',
+            value: 'validator',
           }
         ],
         default: 'account',
       },
-      // Operation dropdowns per resource
 {
   displayName: 'Operation',
   name: 'operation',
   type: 'options',
   noDataExpression: true,
-  displayOptions: {
-    show: {
-      resource: ['account'],
-    },
-  },
+  displayOptions: { show: { resource: ['account'] } },
   options: [
-    {
-      name: 'Get Account Info',
-      value: 'getAccountInfo',
-      description: 'Get account information and data',
-      action: 'Get account info',
-    },
-    {
-      name: 'Get Balance',
-      value: 'getBalance',
-      description: 'Get account balance in lamports',
-      action: 'Get balance',
-    },
-    {
-      name: 'Get Program Accounts',
-      value: 'getProgramAccounts',
-      description: 'Get accounts owned by a program',
-      action: 'Get program accounts',
-    },
-    {
-      name: 'Get Multiple Accounts',
-      value: 'getMultipleAccounts',
-      description: 'Get multiple account information',
-      action: 'Get multiple accounts',
-    },
-    {
-      name: 'Get Largest Accounts',
-      value: 'getLargestAccounts',
-      description: 'Get largest accounts by balance',
-      action: 'Get largest accounts',
-    },
+    { name: 'Get Account Info', value: 'getAccountInfo', description: 'Get account data and executable status', action: 'Get account info' },
+    { name: 'Get Balance', value: 'getBalance', description: 'Get lamport balance of an account', action: 'Get balance' },
+    { name: 'Get Multiple Accounts', value: 'getMultipleAccounts', description: 'Get data for multiple accounts', action: 'Get multiple accounts' },
+    { name: 'Get Program Accounts', value: 'getProgramAccounts', description: 'Get accounts owned by a program', action: 'Get program accounts' },
+    { name: 'Get Token Accounts By Owner', value: 'getTokenAccountsByOwner', description: 'Get SPL token accounts by owner', action: 'Get token accounts by owner' },
+    { name: 'Get Largest Accounts', value: 'getLargestAccounts', description: 'Get largest accounts by balance', action: 'Get largest accounts' },
   ],
   default: 'getAccountInfo',
 },
@@ -121,42 +95,13 @@ export class Solana implements INodeType {
   name: 'operation',
   type: 'options',
   noDataExpression: true,
-  displayOptions: {
-    show: {
-      resource: ['transaction'],
-    },
-  },
+  displayOptions: { show: { resource: ['transaction'] } },
   options: [
-    {
-      name: 'Get Transaction',
-      value: 'getTransaction',
-      description: 'Get transaction details by signature',
-      action: 'Get transaction details',
-    },
-    {
-      name: 'Get Confirmed Transaction',
-      value: 'getConfirmedTransaction',
-      description: 'Get confirmed transaction details',
-      action: 'Get confirmed transaction details',
-    },
-    {
-      name: 'Send Transaction',
-      value: 'sendTransaction',
-      description: 'Submit a transaction to the network',
-      action: 'Send transaction to network',
-    },
-    {
-      name: 'Simulate Transaction',
-      value: 'simulateTransaction',
-      description: 'Simulate a transaction',
-      action: 'Simulate transaction',
-    },
-    {
-      name: 'Get Signatures For Address',
-      value: 'getSignaturesForAddress',
-      description: 'Get transaction signatures for an address',
-      action: 'Get signatures for address',
-    },
+    { name: 'Send Transaction', value: 'sendTransaction', description: 'Submit a signed transaction to the network', action: 'Send a transaction' },
+    { name: 'Simulate Transaction', value: 'simulateTransaction', description: 'Simulate transaction execution without submitting', action: 'Simulate a transaction' },
+    { name: 'Get Transaction', value: 'getTransaction', description: 'Get transaction details by signature', action: 'Get transaction details' },
+    { name: 'Get Signatures for Address', value: 'getSignaturesForAddress', description: 'Get transaction signatures for an address', action: 'Get signatures for address' },
+    { name: 'Get Confirmed Transaction', value: 'getConfirmedTransaction', description: 'Get confirmed transaction details', action: 'Get confirmed transaction' },
     {
       name: 'Get Recent Blockhash',
       value: 'getRecentBlockhash',
@@ -170,101 +115,93 @@ export class Solana implements INodeType {
       action: 'Get fee for message',
     },
   ],
-  default: 'getTransaction',
+  default: 'sendTransaction',
 },
 {
-  displayName: 'Operation',
-  name: 'operation',
-  type: 'options',
-  noDataExpression: true,
-  displayOptions: {
-    show: {
-      resource: ['token'],
-    },
-  },
-  options: [
-    {
-      name: 'Get Token Account Balance',
-      value: 'getTokenAccountBalance',
-      description: 'Get the balance of a token account',
-      action: 'Get token account balance',
-    },
-    {
-      name: 'Get Token Accounts By Owner',
-      value: 'getTokenAccountsByOwner',
-      description: 'Get all token accounts owned by a specific address',
-      action: 'Get token accounts by owner',
-    },
-    {
-      name: 'Get Token Accounts By Delegate',
-      value: 'getTokenAccountsByDelegate',
-      description: 'Get all token accounts delegated to a specific address',
-      action: 'Get token accounts by delegate',
-    },
-    {
-      name: 'Get Token Supply',
-      value: 'getTokenSupply',
-      description: 'Get the total supply of a token',
-      action: 'Get token supply',
-    },
-    {
-      name: 'Get Token Largest Accounts',
-      value: 'getTokenLargestAccounts',
-      description: 'Get the largest accounts for a token',
-      action: 'Get token largest accounts',
-    },
-  ],
-  default: 'getTokenAccountBalance',
-},
-{
-  displayName: 'Operation',
-  name: 'operation',
-  type: 'options',
-  noDataExpression: true,
-  displayOptions: {
-    show: {
-      resource: ['block'],
-    },
-  },
-  options: [
-    {
-      name: 'Get Block',
-      value: 'getBlock',
-      description: 'Get block information for a given slot',
-      action: 'Get block information',
-    },
-    {
-      name: 'Get Blocks',
-      value: 'getBlocks',
-      description: 'Get list of blocks between slots',
-      action: 'Get list of blocks',
-    },
-    {
-      name: 'Get Block Height',
-      value: 'getBlockHeight',
-      description: 'Get current block height',
-      action: 'Get current block height',
-    },
-    {
-      name: 'Get Slot',
-      value: 'getSlot',
-      description: 'Get current slot',
-      action: 'Get current slot',
-    },
-    {
-      name: 'Get Epoch Info',
-      value: 'getEpochInfo',
-      description: 'Get epoch information',
-      action: 'Get epoch information',
-    },
+	displayName: 'Operation',
+	name: 'operation',
+	type: 'options',
+	noDataExpression: true,
+	displayOptions: { show: { resource: ['block'] } },
+	options: [
+		{
+			name: 'Get Block',
+			value: 'getBlock',
+			description: 'Get block data by slot number',
+			action: 'Get block data',
+		},
+		{
+			name: 'Get Blocks',
+			value: 'getBlocks',
+			description: 'Get list of confirmed blocks',
+			action: 'Get list of blocks',
+		},
+		{
+			name: 'Get Slot',
+			value: 'getSlot',
+			description: 'Get current slot number',
+			action: 'Get current slot',
+		},
+		{
+			name: 'Get Block Height',
+			value: 'getBlockHeight',
+			description: 'Get current block height',
+			action: 'Get block height',
+		},
+		{
+			name: 'Get Epoch Info',
+			value: 'getEpochInfo',
+			description: 'Get current epoch information',
+			action: 'Get epoch information',
+		},
     {
       name: 'Get Block Time',
       value: 'getBlockTime',
       description: 'Get estimated time of a block',
       action: 'Get block time',
     },
+	],
+	default: 'getBlock',
+},
+{
+  displayName: 'Operation',
+  name: 'operation',
+  type: 'options',
+  noDataExpression: true,
+  displayOptions: { show: { resource: ['token'] } },
+  options: [
+    { name: 'Get Token Supply', value: 'getTokenSupply', description: 'Get total supply of an SPL token', action: 'Get token supply' },
+    { name: 'Get Token Account Balance', value: 'getTokenAccountBalance', description: 'Get token account balance', action: 'Get token account balance' },
+    { name: 'Get Token Accounts By Delegate', value: 'getTokenAccountsByDelegate', description: 'Get token accounts by delegate', action: 'Get token accounts by delegate' },
+    { name: 'Get Token Largest Accounts', value: 'getTokenLargestAccounts', description: 'Get largest token holders', action: 'Get token largest accounts' },
   ],
-  default: 'getBlock',
+  default: 'getTokenSupply',
+},
+{
+	displayName: 'Operation',
+	name: 'operation',
+	type: 'options',
+	noDataExpression: true,
+	displayOptions: {
+		show: {
+			resource: ['program'],
+		},
+	},
+	options: [
+		{
+			name: 'Get Program Accounts',
+			value: 'getProgramAccounts',
+			description: 'Get all accounts owned by a program',
+			action: 'Get program accounts',
+		},
+		{
+			name: 'Get Account Info',
+			value: 'getAccountInfo',
+			description: 'Get program account information',
+			action: 'Get account info',
+		},
+	],
+	default: 'getProgramAccounts',
 },
 {
   displayName: 'Operation',
@@ -273,33 +210,33 @@ export class Solana implements INodeType {
   noDataExpression: true,
   displayOptions: {
     show: {
-      resource: ['staking'],
+      resource: ['validator'],
     },
   },
   options: [
     {
-      name: 'Get Stake Activation',
-      value: 'getStakeActivation',
-      description: 'Get stake activation state for a stake account',
-      action: 'Get stake activation state',
-    },
-    {
       name: 'Get Vote Accounts',
       value: 'getVoteAccounts',
-      description: 'Get vote accounts and validator information',
+      description: 'Get vote accounts and staking info',
       action: 'Get vote accounts',
     },
     {
-      name: 'Get Inflation Reward',
-      value: 'getInflationReward',
-      description: 'Get inflation rewards for addresses',
-      action: 'Get inflation rewards',
+      name: 'Get Stake Activation',
+      value: 'getStakeActivation',
+      description: 'Get stake account activation status',
+      action: 'Get stake activation',
     },
     {
       name: 'Get Inflation Rate',
       value: 'getInflationRate',
       description: 'Get current inflation rate',
       action: 'Get inflation rate',
+    },
+    {
+      name: 'Get Inflation Reward',
+      value: 'getInflationReward',
+      description: 'Get inflation rewards for addresses',
+      action: 'Get inflation reward',
     },
     {
       name: 'Get Inflation Governor',
@@ -314,127 +251,59 @@ export class Solana implements INodeType {
       action: 'Get epoch schedule',
     },
   ],
-  default: 'getStakeActivation',
+  default: 'getVoteAccounts',
 },
-      // Parameter definitions
 {
   displayName: 'Public Key',
   name: 'pubkey',
   type: 'string',
   required: true,
-  displayOptions: {
-    show: {
-      resource: ['account'],
-      operation: ['getAccountInfo', 'getBalance'],
-    },
-  },
+  displayOptions: { show: { resource: ['account'], operation: ['getAccountInfo', 'getBalance'] } },
   default: '',
-  description: 'The account public key encoded in base-58',
+  description: 'Base58 encoded public key of the account',
 },
 {
   displayName: 'Public Keys',
   name: 'pubkeys',
   type: 'string',
   required: true,
-  displayOptions: {
-    show: {
-      resource: ['account'],
-      operation: ['getMultipleAccounts'],
-    },
-  },
+  displayOptions: { show: { resource: ['account'], operation: ['getMultipleAccounts'] } },
   default: '',
-  description: 'Comma-separated list of account public keys encoded in base-58',
+  description: 'Comma-separated list of base58 encoded public keys (max 100)',
 },
 {
   displayName: 'Program ID',
   name: 'programId',
   type: 'string',
   required: true,
-  displayOptions: {
-    show: {
-      resource: ['account'],
-      operation: ['getProgramAccounts'],
-    },
-  },
+  displayOptions: { show: { resource: ['account'], operation: ['getProgramAccounts'] } },
   default: '',
-  description: 'The program ID that owns the accounts',
+  description: 'Base58 encoded public key of the program',
 },
 {
-  displayName: 'Commitment Level',
-  name: 'commitment',
-  type: 'options',
-  displayOptions: {
-    show: {
-      resource: ['account'],
-    },
-  },
-  options: [
-    {
-      name: 'Processed',
-      value: 'processed',
-      description: 'Query the most recent block which has reached 1 confirmation',
-    },
-    {
-      name: 'Confirmed',
-      value: 'confirmed',
-      description: 'Query the most recent block which has reached confirmation by the cluster',
-    },
-    {
-      name: 'Finalized',
-      value: 'finalized',
-      description: 'Query the most recent block which has been finalized by the cluster',
-    },
-  ],
-  default: 'finalized',
-  description: 'The commitment level to use',
+  displayName: 'Owner',
+  name: 'owner',
+  type: 'string',
+  required: true,
+  displayOptions: { show: { resource: ['account'], operation: ['getTokenAccountsByOwner'] } },
+  default: '',
+  description: 'Base58 encoded public key of the account owner',
 },
 {
-  displayName: 'Encoding',
-  name: 'encoding',
-  type: 'options',
-  displayOptions: {
-    show: {
-      resource: ['account'],
-      operation: ['getAccountInfo', 'getProgramAccounts', 'getMultipleAccounts'],
-    },
-  },
-  options: [
-    {
-      name: 'Base58',
-      value: 'base58',
-      description: 'Limited to account data of less than 129 bytes',
-    },
-    {
-      name: 'Base64',
-      value: 'base64',
-      description: 'Account data encoded using base64',
-    },
-    {
-      name: 'Base64+Zstd',
-      value: 'base64+zstd',
-      description: 'Account data compressed with Zstd and encoded using base64',
-    },
-    {
-      name: 'JSON Parsed',
-      value: 'jsonParsed',
-      description: 'Account data is parsed according to the account\'s owner program',
-    },
-  ],
-  default: 'base64',
-  description: 'Encoding format for account data',
+  displayName: 'Mint',
+  name: 'mint',
+  type: 'string',
+  displayOptions: { show: { resource: ['account'], operation: ['getTokenAccountsByOwner'] } },
+  default: '',
+  description: 'Base58 encoded public key of the SPL Token mint',
 },
 {
-  displayName: 'Filters',
-  name: 'filters',
-  type: 'json',
-  displayOptions: {
-    show: {
-      resource: ['account'],
-      operation: ['getProgramAccounts'],
-    },
-  },
-  default: '[]',
-  description: 'JSON array of filter objects to use when requesting program accounts',
+  displayName: 'Token Program ID',
+  name: 'tokenProgramId',
+  type: 'string',
+  displayOptions: { show: { resource: ['account'], operation: ['getTokenAccountsByOwner'] } },
+  default: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
+  description: 'Base58 encoded public key of the SPL Token program',
 },
 {
   displayName: 'Filter',
@@ -462,128 +331,124 @@ export class Solana implements INodeType {
   description: 'Filter to apply when retrieving largest accounts',
 },
 {
-  displayName: 'Signature',
-  name: 'signature',
-  type: 'string',
-  required: true,
-  displayOptions: {
-    show: {
-      resource: ['transaction'],
-      operation: ['getTransaction', 'getConfirmedTransaction'],
-    },
-  },
-  default: '',
-  description: 'Transaction signature as base58 encoded string',
-},
-{
   displayName: 'Commitment',
   name: 'commitment',
   type: 'options',
-  displayOptions: {
-    show: {
-      resource: ['transaction'],
-      operation: ['getTransaction', 'simulateTransaction', 'getSignaturesForAddress', 'getRecentBlockhash', 'getFeeForMessage'],
-    },
-  },
+  displayOptions: { show: { resource: ['account'] } },
   options: [
-    {
-      name: 'Processed',
-      value: 'processed',
-    },
-    {
-      name: 'Confirmed',
-      value: 'confirmed',
-    },
-    {
-      name: 'Finalized',
-      value: 'finalized',
-    },
+    { name: 'Finalized', value: 'finalized', description: 'Highest slot confirmed by supermajority' },
+    { name: 'Confirmed', value: 'confirmed', description: 'Slot confirmed by supermajority' },
+    { name: 'Processed', value: 'processed', description: 'Most recent slot processed by validator' },
   ],
   default: 'finalized',
-  description: 'Commitment level for the request',
+  description: 'Commitment level for querying state',
 },
 {
   displayName: 'Encoding',
   name: 'encoding',
   type: 'options',
-  displayOptions: {
-    show: {
-      resource: ['transaction'],
-      operation: ['getTransaction', 'getConfirmedTransaction', 'sendTransaction', 'simulateTransaction'],
-    },
-  },
+  displayOptions: { show: { resource: ['account'], operation: ['getAccountInfo', 'getMultipleAccounts', 'getProgramAccounts', 'getTokenAccountsByOwner'] } },
   options: [
-    {
-      name: 'JSON',
-      value: 'json',
-    },
-    {
-      name: 'JSON Parsed',
-      value: 'jsonParsed',
-    },
-    {
-      name: 'Base58',
-      value: 'base58',
-    },
-    {
-      name: 'Base64',
-      value: 'base64',
-    },
+    { name: 'Base58', value: 'base58', description: 'Base58 encoding' },
+    { name: 'Base64', value: 'base64', description: 'Base64 encoding' },
+    { name: 'Base64+Zstd', value: 'base64+zstd', description: 'Base64 encoding with Zstd compression' },
+    { name: 'JSON Parsed', value: 'jsonParsed', description: 'JSON parsed data for known account types' },
   ],
-  default: 'json',
-  description: 'Encoding format for the response',
+  default: 'base64',
+  description: 'Encoding format for account data',
+},
+{
+  displayName: 'Filters',
+  name: 'filters',
+  type: 'json',
+  displayOptions: { show: { resource: ['account'], operation: ['getProgramAccounts'] } },
+  default: '[]',
+  description: 'JSON array of filter objects to apply',
 },
 {
   displayName: 'Transaction',
   name: 'transaction',
   type: 'string',
   required: true,
-  displayOptions: {
-    show: {
-      resource: ['transaction'],
-      operation: ['sendTransaction', 'simulateTransaction'],
-    },
-  },
+  displayOptions: { show: { resource: ['transaction'], operation: ['sendTransaction', 'simulateTransaction'] } },
   default: '',
-  description: 'Fully-signed Transaction, as encoded string',
+  description: 'Signed transaction data as base64 or base58 string',
+},
+{
+  displayName: 'Encoding',
+  name: 'encoding',
+  type: 'options',
+  options: [
+    { name: 'Base58', value: 'base58' },
+    { name: 'Base64', value: 'base64' },
+    { name: 'JSON', value: 'json' },
+    { name: 'JSON Parsed', value: 'jsonParsed' },
+  ],
+  displayOptions: { show: { resource: ['transaction'], operation: ['sendTransaction', 'simulateTransaction', 'getTransaction', 'getConfirmedTransaction'] } },
+  default: 'base64',
+  description: 'Encoding format for the transaction data',
+},
+{
+  displayName: 'Skip Preflight',
+  name: 'skipPreflight',
+  type: 'boolean',
+  displayOptions: { show: { resource: ['transaction'], operation: ['sendTransaction'] } },
+  default: false,
+  description: 'Skip the preflight transaction checks',
+},
+{
+  displayName: 'Commitment',
+  name: 'commitment',
+  type: 'options',
+  options: [
+    { name: 'Processed', value: 'processed' },
+    { name: 'Confirmed', value: 'confirmed' },
+    { name: 'Finalized', value: 'finalized' }
+  ],
+  displayOptions: { show: { resource: ['transaction'], operation: ['sendTransaction', 'simulateTransaction', 'getTransaction', 'getSignaturesForAddress', 'getConfirmedTransaction', 'getRecentBlockhash', 'getFeeForMessage'] } },
+  default: 'finalized',
+  description: 'Commitment level for querying the state',
+},
+{
+  displayName: 'Signature Verification',
+  name: 'sigVerify',
+  type: 'boolean',
+  displayOptions: { show: { resource: ['transaction'], operation: ['simulateTransaction'] } },
+  default: false,
+  description: 'Enable signature verification',
+},
+{
+  displayName: 'Transaction Signature',
+  name: 'signature',
+  type: 'string',
+  required: true,
+  displayOptions: { show: { resource: ['transaction'], operation: ['getTransaction', 'getConfirmedTransaction'] } },
+  default: '',
+  description: 'Transaction signature as base58 string',
 },
 {
   displayName: 'Address',
   name: 'address',
   type: 'string',
   required: true,
-  displayOptions: {
-    show: {
-      resource: ['transaction'],
-      operation: ['getSignaturesForAddress'],
-    },
-  },
+  displayOptions: { show: { resource: ['transaction'], operation: ['getSignaturesForAddress'] } },
   default: '',
-  description: 'Account address as base58 encoded string',
+  description: 'Account address as base58 string',
 },
 {
   displayName: 'Limit',
   name: 'limit',
   type: 'number',
-  displayOptions: {
-    show: {
-      resource: ['transaction'],
-      operation: ['getSignaturesForAddress'],
-    },
-  },
+  displayOptions: { show: { resource: ['transaction'], operation: ['getSignaturesForAddress'] } },
   default: 1000,
-  description: 'Maximum transaction signatures to return (between 1 and 1,000)',
+  typeOptions: { minValue: 1, maxValue: 1000 },
+  description: 'Maximum number of signatures to return',
 },
 {
   displayName: 'Before',
   name: 'before',
   type: 'string',
-  displayOptions: {
-    show: {
-      resource: ['transaction'],
-      operation: ['getSignaturesForAddress'],
-    },
-  },
+  displayOptions: { show: { resource: ['transaction'], operation: ['getSignaturesForAddress'] } },
   default: '',
   description: 'Start searching backwards from this transaction signature',
 },
@@ -591,14 +456,9 @@ export class Solana implements INodeType {
   displayName: 'Until',
   name: 'until',
   type: 'string',
-  displayOptions: {
-    show: {
-      resource: ['transaction'],
-      operation: ['getSignaturesForAddress'],
-    },
-  },
+  displayOptions: { show: { resource: ['transaction'], operation: ['getSignaturesForAddress'] } },
   default: '',
-  description: 'Search until this transaction signature, if found before limit reached',
+  description: 'Search until this transaction signature',
 },
 {
   displayName: 'Message',
@@ -615,265 +475,113 @@ export class Solana implements INodeType {
   description: 'Base64 encoded message for which to get the fee',
 },
 {
-  displayName: 'Token Account Public Key',
-  name: 'pubkey',
-  type: 'string',
-  required: true,
-  displayOptions: {
-    show: {
-      resource: ['token'],
-      operation: ['getTokenAccountBalance'],
-    },
-  },
-  default: '',
-  description: 'The public key of the token account',
+	displayName: 'Slot Number',
+	name: 'slot',
+	type: 'number',
+	required: true,
+	displayOptions: {
+		show: {
+			resource: ['block'],
+			operation: ['getBlock', 'getBlockTime'],
+		},
+	},
+	default: 0,
+	description: 'The slot number of the block to retrieve',
 },
 {
-  displayName: 'Owner Public Key',
-  name: 'owner',
-  type: 'string',
-  required: true,
-  displayOptions: {
-    show: {
-      resource: ['token'],
-      operation: ['getTokenAccountsByOwner'],
-    },
-  },
-  default: '',
-  description: 'The public key of the token account owner',
+	displayName: 'Commitment Level',
+	name: 'commitment',
+	type: 'options',
+	displayOptions: {
+		show: {
+			resource: ['block'],
+			operation: ['getBlock', 'getBlocks', 'getSlot', 'getBlockHeight', 'getEpochInfo'],
+		},
+	},
+	options: [
+		{
+			name: 'Finalized',
+			value: 'finalized',
+			description: 'The node will query the most recent block confirmed by supermajority',
+		},
+		{
+			name: 'Confirmed',
+			value: 'confirmed',
+			description: 'The node will query the most recent block that has been voted on by supermajority',
+		},
+		{
+			name: 'Processed',
+			value: 'processed',
+			description: 'The node will query its most recent block',
+		},
+	],
+	default: 'finalized',
+	description: 'Commitment level for data consistency',
 },
 {
-  displayName: 'Delegate Public Key',
-  name: 'delegate',
-  type: 'string',
-  required: true,
-  displayOptions: {
-    show: {
-      resource: ['token'],
-      operation: ['getTokenAccountsByDelegate'],
-    },
-  },
-  default: '',
-  description: 'The public key of the delegate',
+	displayName: 'Encoding',
+	name: 'encoding',
+	type: 'options',
+	displayOptions: {
+		show: {
+			resource: ['block'],
+			operation: ['getBlock'],
+		},
+	},
+	options: [
+		{
+			name: 'JSON',
+			value: 'json',
+			description: 'JSON encoding',
+		},
+		{
+			name: 'JSON Parsed',
+			value: 'jsonParsed',
+			description: 'JSON encoding with parsed transaction data',
+		},
+		{
+			name: 'Base58',
+			value: 'base58',
+			description: 'Base58 encoding',
+		},
+		{
+			name: 'Base64',
+			value: 'base64',
+			description: 'Base64 encoding',
+		},
+	],
+	default: 'json',
+	description: 'Encoding format for the response',
 },
 {
-  displayName: 'Mint Public Key',
-  name: 'mint',
-  type: 'string',
-  required: true,
-  displayOptions: {
-    show: {
-      resource: ['token'],
-      operation: ['getTokenSupply', 'getTokenLargestAccounts'],
-    },
-  },
-  default: '',
-  description: 'The public key of the token mint',
-},
-{
-  displayName: 'Filter By Mint',
-  name: 'filterByMint',
-  type: 'boolean',
-  displayOptions: {
-    show: {
-      resource: ['token'],
-      operation: ['getTokenAccountsByOwner', 'getTokenAccountsByDelegate'],
-    },
-  },
-  default: false,
-  description: 'Whether to filter by a specific mint address',
-},
-{
-  displayName: 'Mint Address',
-  name: 'mintAddress',
-  type: 'string',
-  displayOptions: {
-    show: {
-      resource: ['token'],
-      operation: ['getTokenAccountsByOwner', 'getTokenAccountsByDelegate'],
-      filterByMint: [true],
-    },
-  },
-  default: '',
-  description: 'The mint address to filter by',
-},
-{
-  displayName: 'Program ID',
-  name: 'programId',
-  type: 'string',
-  displayOptions: {
-    show: {
-      resource: ['token'],
-      operation: ['getTokenAccountsByOwner', 'getTokenAccountsByDelegate'],
-      filterByMint: [false],
-    },
-  },
-  default: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
-  description: 'The program ID to filter by (default is SPL Token program)',
-},
-{
-  displayName: 'Commitment',
-  name: 'commitment',
-  type: 'options',
-  displayOptions: {
-    show: {
-      resource: ['token'],
-      operation: ['getTokenAccountBalance', 'getTokenAccountsByOwner', 'getTokenAccountsByDelegate', 'getTokenSupply', 'getTokenLargestAccounts'],
-    },
-  },
-  options: [
-    {
-      name: 'Processed',
-      value: 'processed',
-      description: 'Query the most recent block which has reached 1 confirmation',
-    },
-    {
-      name: 'Confirmed',
-      value: 'confirmed',
-      description: 'Query the most recent block which has reached 1 confirmation by the connected node',
-    },
-    {
-      name: 'Finalized',
-      value: 'finalized',
-      description: 'Query the most recent block which has been finalized by the cluster',
-    },
-  ],
-  default: 'confirmed',
-  description: 'The commitment level to use',
-},
-{
-  displayName: 'Encoding',
-  name: 'encoding',
-  type: 'options',
-  displayOptions: {
-    show: {
-      resource: ['token'],
-      operation: ['getTokenAccountsByOwner', 'getTokenAccountsByDelegate'],
-    },
-  },
-  options: [
-    {
-      name: 'Base58',
-      value: 'base58',
-    },
-    {
-      name: 'Base64',
-      value: 'base64',
-    },
-    {
-      name: 'Base64+Zstd',
-      value: 'base64+zstd',
-    },
-    {
-      name: 'JSON Parsed',
-      value: 'jsonParsed',
-    },
-  ],
-  default: 'jsonParsed',
-  description: 'The encoding format for account data',
-},
-{
-  displayName: 'Slot',
-  name: 'slot',
-  type: 'number',
-  required: true,
-  displayOptions: {
-    show: {
-      resource: ['block'],
-      operation: ['getBlock'],
-    },
-  },
-  default: 0,
-  description: 'The slot of the block to retrieve',
-},
-{
-  displayName: 'Commitment',
-  name: 'commitment',
-  type: 'options',
-  displayOptions: {
-    show: {
-      resource: ['block'],
-      operation: ['getBlock'],
-    },
-  },
-  options: [
-    {
-      name: 'Processed',
-      value: 'processed',
-    },
-    {
-      name: 'Confirmed',
-      value: 'confirmed',
-    },
-    {
-      name: 'Finalized',
-      value: 'finalized',
-    },
-  ],
-  default: 'finalized',
-  description: 'Commitment level for the query',
-},
-{
-  displayName: 'Encoding',
-  name: 'encoding',
-  type: 'options',
-  displayOptions: {
-    show: {
-      resource: ['block'],
-      operation: ['getBlock'],
-    },
-  },
-  options: [
-    {
-      name: 'JSON',
-      value: 'json',
-    },
-    {
-      name: 'JSON Parsed',
-      value: 'jsonParsed',
-    },
-    {
-      name: 'Base58',
-      value: 'base58',
-    },
-    {
-      name: 'Base64',
-      value: 'base64',
-    },
-  ],
-  default: 'json',
-  description: 'Encoding for transaction data',
-},
-{
-  displayName: 'Transaction Details',
-  name: 'transactionDetails',
-  type: 'options',
-  displayOptions: {
-    show: {
-      resource: ['block'],
-      operation: ['getBlock'],
-    },
-  },
-  options: [
-    {
-      name: 'Full',
-      value: 'full',
-    },
-    {
-      name: 'Accounts',
-      value: 'accounts',
-    },
-    {
-      name: 'Signatures',
-      value: 'signatures',
-    },
-    {
-      name: 'None',
-      value: 'none',
-    },
-  ],
-  default: 'full',
-  description: 'Level of transaction detail to return',
+	displayName: 'Transaction Details',
+	name: 'transactionDetails',
+	type: 'options',
+	displayOptions: {
+		show: {
+			resource: ['block'],
+			operation: ['getBlock'],
+		},
+	},
+	options: [
+		{
+			name: 'Full',
+			value: 'full',
+			description: 'Populate the transactions field',
+		},
+		{
+			name: 'Signatures',
+			value: 'signatures',
+			description: 'Only return the transaction signatures',
+		},
+		{
+			name: 'None',
+			value: 'none',
+			description: 'Exclude the transactions field',
+		},
+	],
+	default: 'full',
+	description: 'Level of transaction detail to return',
 },
 {
   displayName: 'Include Rewards',
@@ -889,153 +597,312 @@ export class Solana implements INodeType {
   description: 'Whether to populate rewards array',
 },
 {
-  displayName: 'Start Slot',
-  name: 'startSlot',
-  type: 'number',
+	displayName: 'Start Slot',
+	name: 'startSlot',
+	type: 'number',
+	required: true,
+	displayOptions: {
+		show: {
+			resource: ['block'],
+			operation: ['getBlocks'],
+		},
+	},
+	default: 0,
+	description: 'Start slot number for the range of blocks',
+},
+{
+	displayName: 'End Slot',
+	name: 'endSlot',
+	type: 'number',
+	displayOptions: {
+		show: {
+			resource: ['block'],
+			operation: ['getBlocks'],
+		},
+	},
+	default: 0,
+	description: 'End slot number for the range of blocks (optional)',
+},
+{
+  displayName: 'Mint Address',
+  name: 'mint',
+  type: 'string',
   required: true,
   displayOptions: {
     show: {
-      resource: ['block'],
-      operation: ['getBlocks'],
+      resource: ['token'],
+      operation: ['getTokenSupply', 'getTokenAccountsByDelegate', 'getTokenLargestAccounts'],
     },
   },
-  default: 0,
-  description: 'Start slot for the range',
+  default: '',
+  description: 'The mint address of the SPL token',
 },
 {
-  displayName: 'End Slot',
-  name: 'endSlot',
-  type: 'number',
-  displayOptions: {
-    show: {
-      resource: ['block'],
-      operation: ['getBlocks'],
-    },
-  },
-  default: 0,
-  description: 'End slot for the range (optional)',
-},
-{
-  displayName: 'Commitment',
-  name: 'commitment',
-  type: 'options',
-  displayOptions: {
-    show: {
-      resource: ['block'],
-      operation: ['getBlocks'],
-    },
-  },
-  options: [
-    {
-      name: 'Processed',
-      value: 'processed',
-    },
-    {
-      name: 'Confirmed',
-      value: 'confirmed',
-    },
-    {
-      name: 'Finalized',
-      value: 'finalized',
-    },
-  ],
-  default: 'finalized',
-  description: 'Commitment level for the query',
-},
-{
-  displayName: 'Commitment',
-  name: 'commitment',
-  type: 'options',
-  displayOptions: {
-    show: {
-      resource: ['block'],
-      operation: ['getBlockHeight'],
-    },
-  },
-  options: [
-    {
-      name: 'Processed',
-      value: 'processed',
-    },
-    {
-      name: 'Confirmed',
-      value: 'confirmed',
-    },
-    {
-      name: 'Finalized',
-      value: 'finalized',
-    },
-  ],
-  default: 'finalized',
-  description: 'Commitment level for the query',
-},
-{
-  displayName: 'Commitment',
-  name: 'commitment',
-  type: 'options',
-  displayOptions: {
-    show: {
-      resource: ['block'],
-      operation: ['getSlot'],
-    },
-  },
-  options: [
-    {
-      name: 'Processed',
-      value: 'processed',
-    },
-    {
-      name: 'Confirmed',
-      value: 'confirmed',
-    },
-    {
-      name: 'Finalized',
-      value: 'finalized',
-    },
-  ],
-  default: 'finalized',
-  description: 'Commitment level for the query',
-},
-{
-  displayName: 'Commitment',
-  name: 'commitment',
-  type: 'options',
-  displayOptions: {
-    show: {
-      resource: ['block'],
-      operation: ['getEpochInfo'],
-    },
-  },
-  options: [
-    {
-      name: 'Processed',
-      value: 'processed',
-    },
-    {
-      name: 'Confirmed',
-      value: 'confirmed',
-    },
-    {
-      name: 'Finalized',
-      value: 'finalized',
-    },
-  ],
-  default: 'finalized',
-  description: 'Commitment level for the query',
-},
-{
-  displayName: 'Slot',
-  name: 'slot',
-  type: 'number',
+  displayName: 'Token Account',
+  name: 'tokenAccount',
+  type: 'string',
   required: true,
   displayOptions: {
     show: {
-      resource: ['block'],
-      operation: ['getBlockTime'],
+      resource: ['token'],
+      operation: ['getTokenAccountBalance'],
     },
   },
-  default: 0,
-  description: 'The slot of the block to get time for',
+  default: '',
+  description: 'The token account address',
+},
+{
+  displayName: 'Delegate',
+  name: 'delegate',
+  type: 'string',
+  required: true,
+  displayOptions: {
+    show: {
+      resource: ['token'],
+      operation: ['getTokenAccountsByDelegate'],
+    },
+  },
+  default: '',
+  description: 'The delegate address',
+},
+{
+  displayName: 'Program ID',
+  name: 'programId',
+  type: 'string',
+  required: false,
+  displayOptions: {
+    show: {
+      resource: ['token'],
+      operation: ['getTokenAccountsByDelegate'],
+    },
+  },
+  default: '',
+  description: 'The program ID (optional)',
+},
+{
+  displayName: 'Commitment',
+  name: 'commitment',
+  type: 'options',
+  options: [
+    { name: 'Processed', value: 'processed' },
+    { name: 'Confirmed', value: 'confirmed' },
+    { name: 'Finalized', value: 'finalized' },
+  ],
+  default: 'finalized',
+  displayOptions: {
+    show: {
+      resource: ['token'],
+      operation: ['getTokenSupply', 'getTokenAccountBalance', 'getTokenAccountsByDelegate', 'getTokenLargestAccounts'],
+    },
+  },
+  description: 'The commitment level for data consistency',
+},
+{
+	displayName: 'Program ID',
+	name: 'programId',
+	type: 'string',
+	required: true,
+	displayOptions: {
+		show: {
+			resource: ['program'],
+			operation: ['getProgramAccounts', 'getAccountInfo'],
+		},
+	},
+	default: '',
+	placeholder: '11111111111111111111111111111112',
+	description: 'The program public key as a base58 encoded string',
+},
+{
+	displayName: 'Commitment',
+	name: 'commitment',
+	type: 'options',
+	displayOptions: {
+		show: {
+			resource: ['program'],
+			operation: ['getProgramAccounts', 'getAccountInfo'],
+		},
+	},
+	options: [
+		{
+			name: 'Finalized',
+			value: 'finalized',
+			description: 'Query the most recent block confirmed by supermajority of the cluster',
+		},
+		{
+			name: 'Confirmed',
+			value: 'confirmed',
+			description: 'Query the most recent block that has been voted on by supermajority of the cluster',
+		},
+		{
+			name: 'Processed',
+			value: 'processed',
+			description: 'Query the most recent block which has reached 1 confirmation',
+		},
+	],
+	default: 'finalized',
+	description: 'Commitment level for querying state',
+},
+{
+	displayName: 'Encoding',
+	name: 'encoding',
+	type: 'options',
+	displayOptions: {
+		show: {
+			resource: ['program'],
+			operation: ['getProgramAccounts', 'getAccountInfo'],
+		},
+	},
+	options: [
+		{
+			name: 'Base58',
+			value: 'base58',
+			description: 'Base58 encoding',
+		},
+		{
+			name: 'Base64',
+			value: 'base64',
+			description: 'Base64 encoding',
+		},
+		{
+			name: 'Base64+Zstd',
+			value: 'base64+zstd',
+			description: 'Base64 encoding with Zstd compression',
+		},
+		{
+			name: 'JSON Parsed',
+			value: 'jsonParsed',
+			description: 'JSON format with parsed account data',
+		},
+	],
+	default: 'base64',
+	description: 'Encoding format for account data',
+},
+{
+	displayName: 'Filters',
+	name: 'filters',
+	type: 'fixedCollection',
+	displayOptions: {
+		show: {
+			resource: ['program'],
+			operation: ['getProgramAccounts'],
+		},
+	},
+	default: {},
+	placeholder: 'Add Filter',
+	typeOptions: {
+		multipleValues: true,
+	},
+	options: [
+		{
+			name: 'filter',
+			displayName: 'Filter',
+			values: [
+				{
+					displayName: 'Filter Type',
+					name: 'filterType',
+					type: 'options',
+					options: [
+						{
+							name: 'Data Size',
+							value: 'dataSize',
+							description: 'Filter by account data size',
+						},
+						{
+							name: 'Memcmp',
+							value: 'memcmp',
+							description: 'Filter by memory comparison at specific offset',
+						},
+					],
+					default: 'dataSize',
+				},
+				{
+					displayName: 'Data Size',
+					name: 'dataSize',
+					type: 'number',
+					displayOptions: {
+						show: {
+							filterType: ['dataSize'],
+						},
+					},
+					default: 0,
+					description: 'Size of account data in bytes',
+				},
+				{
+					displayName: 'Offset',
+					name: 'offset',
+					type: 'number',
+					displayOptions: {
+						show: {
+							filterType: ['memcmp'],
+						},
+					},
+					default: 0,
+					description: 'Byte offset for memory comparison',
+				},
+				{
+					displayName: 'Bytes',
+					name: 'bytes',
+					type: 'string',
+					displayOptions: {
+						show: {
+							filterType: ['memcmp'],
+						},
+					},
+					default: '',
+					description: 'Data to compare as base58 encoded string',
+				},
+			],
+		},
+	],
+	description: 'Filters to apply when fetching program accounts',
+},
+{
+	displayName: 'With Context',
+	name: 'withContext',
+	type: 'boolean',
+	displayOptions: {
+		show: {
+			resource: ['program'],
+			operation: ['getProgramAccounts'],
+		},
+	},
+	default: false,
+	description: 'Whether to return the slot and context information',
+},
+{
+	displayName: 'Data Slice',
+	name: 'dataSlice',
+	type: 'fixedCollection',
+	displayOptions: {
+		show: {
+			resource: ['program'],
+			operation: ['getProgramAccounts', 'getAccountInfo'],
+		},
+	},
+	default: {},
+	options: [
+		{
+			name: 'slice',
+			displayName: 'Data Slice',
+			values: [
+				{
+					displayName: 'Offset',
+					name: 'offset',
+					type: 'number',
+					default: 0,
+					description: 'Byte offset from which to start returning data',
+				},
+				{
+					displayName: 'Length',
+					name: 'length',
+					type: 'number',
+					default: 0,
+					description: 'Number of bytes to return',
+				},
+			],
+		},
+	],
+	description: 'Limit the returned account data using the provided offset and length fields',
 },
 {
   displayName: 'Stake Account Public Key',
@@ -1044,7 +911,7 @@ export class Solana implements INodeType {
   required: true,
   displayOptions: {
     show: {
-      resource: ['staking'],
+      resource: ['validator'],
       operation: ['getStakeActivation'],
     },
   },
@@ -1052,44 +919,31 @@ export class Solana implements INodeType {
   description: 'Public key of the stake account to query',
 },
 {
-  displayName: 'Commitment',
+  displayName: 'Commitment Level',
   name: 'commitment',
   type: 'options',
   displayOptions: {
     show: {
-      resource: ['staking'],
-      operation: ['getStakeActivation', 'getVoteAccounts', 'getInflationReward', 'getInflationGovernor'],
+      resource: ['validator'],
+      operation: ['getVoteAccounts', 'getStakeActivation', 'getInflationReward', 'getInflationGovernor'],
     },
   },
   options: [
     {
-      name: 'Processed',
-      value: 'processed',
+      name: 'Finalized',
+      value: 'finalized',
     },
     {
       name: 'Confirmed',
       value: 'confirmed',
     },
     {
-      name: 'Finalized',
-      value: 'finalized',
+      name: 'Processed',
+      value: 'processed',
     },
   ],
   default: 'finalized',
-  description: 'Commitment level to use for the request',
-},
-{
-  displayName: 'Epoch',
-  name: 'epoch',
-  type: 'number',
-  displayOptions: {
-    show: {
-      resource: ['staking'],
-      operation: ['getStakeActivation', 'getInflationReward'],
-    },
-  },
-  default: '',
-  description: 'Epoch for which to fetch the activation/reward. If omitted, the stake activation/reward for the current epoch is fetched',
+  description: 'The level of commitment desired',
 },
 {
   displayName: 'Vote Public Key',
@@ -1097,12 +951,12 @@ export class Solana implements INodeType {
   type: 'string',
   displayOptions: {
     show: {
-      resource: ['staking'],
+      resource: ['validator'],
       operation: ['getVoteAccounts'],
     },
   },
   default: '',
-  description: 'Only return results for this validator vote address',
+  description: 'Only return results for this validator vote address (base58 encoded)',
 },
 {
   displayName: 'Keep Unstaked Delinquents',
@@ -1110,12 +964,25 @@ export class Solana implements INodeType {
   type: 'boolean',
   displayOptions: {
     show: {
-      resource: ['staking'],
+      resource: ['validator'],
       operation: ['getVoteAccounts'],
     },
   },
   default: false,
   description: 'Do not filter out delinquent validators with no stake',
+},
+{
+  displayName: 'Epoch',
+  name: 'epoch',
+  type: 'number',
+  displayOptions: {
+    show: {
+      resource: ['validator'],
+      operation: ['getStakeActivation', 'getInflationReward'],
+    },
+  },
+  default: '',
+  description: 'Epoch for which to fetch the activation/reward. If omitted, the stake activation/reward for the current epoch is fetched',
 },
 {
   displayName: 'Addresses',
@@ -1124,7 +991,7 @@ export class Solana implements INodeType {
   required: true,
   displayOptions: {
     show: {
-      resource: ['staking'],
+      resource: ['validator'],
       operation: ['getInflationReward'],
     },
   },
@@ -1143,12 +1010,14 @@ export class Solana implements INodeType {
         return [await executeAccountOperations.call(this, items)];
       case 'transaction':
         return [await executeTransactionOperations.call(this, items)];
-      case 'token':
-        return [await executeTokenOperations.call(this, items)];
       case 'block':
         return [await executeBlockOperations.call(this, items)];
-      case 'staking':
-        return [await executeStakingOperations.call(this, items)];
+      case 'token':
+        return [await executeTokenOperations.call(this, items)];
+      case 'program':
+        return [await executeProgramOperations.call(this, items)];
+      case 'validator':
+        return [await executeValidatorOperations.call(this, items)];
       default:
         throw new NodeOperationError(this.getNode(), `The resource "${resource}" is not supported`);
     }
@@ -1192,7 +1061,7 @@ async function executeAccountOperations(
 
           const options: any = {
             method: 'POST',
-            url: credentials.baseUrl || 'https://api.mainnet-beta.solana.com',
+            url: credentials.baseUrl || credentials.rpcUrl || 'https://api.mainnet-beta.solana.com',
             headers: {
               'Content-Type': 'application/json',
             },
@@ -1232,7 +1101,50 @@ async function executeAccountOperations(
 
           const options: any = {
             method: 'POST',
-            url: credentials.baseUrl || 'https://api.mainnet-beta.solana.com',
+            url: credentials.baseUrl || credentials.rpcUrl || 'https://api.mainnet-beta.solana.com',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: requestBody,
+            json: true,
+          };
+
+          if (credentials.apiKey) {
+            options.headers['Authorization'] = `Bearer ${credentials.apiKey}`;
+          }
+
+          result = await this.helpers.httpRequest(options) as any;
+
+          if (result.error) {
+            throw new NodeApiError(this.getNode(), result.error, { message: result.error.message });
+          }
+
+          result = result.result;
+          break;
+        }
+
+        case 'getMultipleAccounts': {
+          const pubkeysString = this.getNodeParameter('pubkeys', i) as string;
+          const pubkeys = pubkeysString.split(',').map((key: string) => key.trim());
+          const commitment = this.getNodeParameter('commitment', i) as string;
+          const encoding = this.getNodeParameter('encoding', i) as string;
+
+          const requestBody: any = {
+            jsonrpc: '2.0',
+            id: 1,
+            method: 'getMultipleAccounts',
+            params: [
+              pubkeys,
+              {
+                commitment,
+                encoding,
+              },
+            ],
+          };
+
+          const options: any = {
+            method: 'POST',
+            url: credentials.baseUrl || credentials.rpcUrl || 'https://api.mainnet-beta.solana.com',
             headers: {
               'Content-Type': 'application/json',
             },
@@ -1283,7 +1195,7 @@ async function executeAccountOperations(
 
           const options: any = {
             method: 'POST',
-            url: credentials.baseUrl || 'https://api.mainnet-beta.solana.com',
+            url: credentials.baseUrl || credentials.rpcUrl || 'https://api.mainnet-beta.solana.com',
             headers: {
               'Content-Type': 'application/json',
             },
@@ -1305,19 +1217,27 @@ async function executeAccountOperations(
           break;
         }
 
-        case 'getMultipleAccounts': {
-          const pubkeysString = this.getNodeParameter('pubkeys', i) as string;
+        case 'getTokenAccountsByOwner': {
+          const owner = this.getNodeParameter('owner', i) as string;
+          const mint = this.getNodeParameter('mint', i) as string;
+          const tokenProgramId = this.getNodeParameter('tokenProgramId', i) as string;
           const commitment = this.getNodeParameter('commitment', i) as string;
           const encoding = this.getNodeParameter('encoding', i) as string;
 
-          const pubkeys = pubkeysString.split(',').map((key: string) => key.trim());
+          let filter: any;
+          if (mint) {
+            filter = { mint };
+          } else {
+            filter = { programId: tokenProgramId };
+          }
 
           const requestBody: any = {
             jsonrpc: '2.0',
             id: 1,
-            method: 'getMultipleAccounts',
+            method: 'getTokenAccountsByOwner',
             params: [
-              pubkeys,
+              owner,
+              filter,
               {
                 commitment,
                 encoding,
@@ -1327,7 +1247,7 @@ async function executeAccountOperations(
 
           const options: any = {
             method: 'POST',
-            url: credentials.baseUrl || 'https://api.mainnet-beta.solana.com',
+            url: credentials.baseUrl || credentials.rpcUrl || 'https://api.mainnet-beta.solana.com',
             headers: {
               'Content-Type': 'application/json',
             },
@@ -1367,7 +1287,7 @@ async function executeAccountOperations(
 
           const options: any = {
             method: 'POST',
-            url: credentials.baseUrl || 'https://api.mainnet-beta.solana.com',
+            url: credentials.baseUrl || credentials.rpcUrl || 'https://api.mainnet-beta.solana.com',
             headers: {
               'Content-Type': 'application/json',
             },
@@ -1417,9 +1337,83 @@ async function executeTransactionOperations(
   for (let i = 0; i < items.length; i++) {
     try {
       let result: any;
-      const rpcUrl = credentials.rpcUrl || 'https://api.mainnet-beta.solana.com';
+      const rpcUrl = credentials.rpcUrl || credentials.baseUrl || 'https://api.mainnet-beta.solana.com';
 
       switch (operation) {
+        case 'sendTransaction': {
+          const transaction = this.getNodeParameter('transaction', i) as string;
+          const encoding = this.getNodeParameter('encoding', i) as string;
+          const skipPreflight = this.getNodeParameter('skipPreflight', i) as boolean;
+          const commitment = this.getNodeParameter('commitment', i) as string;
+
+          const body = {
+            jsonrpc: '2.0',
+            id: 1,
+            method: 'sendTransaction',
+            params: [
+              transaction,
+              {
+                encoding,
+                skipPreflight,
+                commitment
+              }
+            ]
+          };
+
+          const options: any = {
+            method: 'POST',
+            url: rpcUrl,
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body),
+          };
+
+          if (credentials.apiKey) {
+            options.headers.Authorization = `Bearer ${credentials.apiKey}`;
+          }
+
+          result = await this.helpers.httpRequest(options) as any;
+          break;
+        }
+
+        case 'simulateTransaction': {
+          const transaction = this.getNodeParameter('transaction', i) as string;
+          const commitment = this.getNodeParameter('commitment', i) as string;
+          const sigVerify = this.getNodeParameter('sigVerify', i) as boolean;
+          const encoding = this.getNodeParameter('encoding', i) as string;
+
+          const body = {
+            jsonrpc: '2.0',
+            id: 1,
+            method: 'simulateTransaction',
+            params: [
+              transaction,
+              {
+                commitment,
+                sigVerify,
+                encoding
+              }
+            ]
+          };
+
+          const options: any = {
+            method: 'POST',
+            url: rpcUrl,
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body),
+          };
+
+          if (credentials.apiKey) {
+            options.headers.Authorization = `Bearer ${credentials.apiKey}`;
+          }
+
+          result = await this.helpers.httpRequest(options) as any;
+          break;
+        }
+
         case 'getTransaction': {
           const signature = this.getNodeParameter('signature', i) as string;
           const commitment = this.getNodeParameter('commitment', i) as string;
@@ -1462,66 +1456,6 @@ async function executeTransactionOperations(
             params: [
               signature,
               encoding,
-            ],
-          };
-
-          const options: any = {
-            method: 'POST',
-            url: rpcUrl,
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(requestBody),
-          };
-
-          result = await this.helpers.httpRequest(options) as any;
-          break;
-        }
-
-        case 'sendTransaction': {
-          const transaction = this.getNodeParameter('transaction', i) as string;
-          const encoding = this.getNodeParameter('encoding', i) as string;
-
-          const requestBody: any = {
-            jsonrpc: '2.0',
-            id: 1,
-            method: 'sendTransaction',
-            params: [
-              transaction,
-              {
-                encoding,
-              },
-            ],
-          };
-
-          const options: any = {
-            method: 'POST',
-            url: rpcUrl,
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(requestBody),
-          };
-
-          result = await this.helpers.httpRequest(options) as any;
-          break;
-        }
-
-        case 'simulateTransaction': {
-          const transaction = this.getNodeParameter('transaction', i) as string;
-          const commitment = this.getNodeParameter('commitment', i) as string;
-          const encoding = this.getNodeParameter('encoding', i) as string;
-
-          const requestBody: any = {
-            jsonrpc: '2.0',
-            id: 1,
-            method: 'simulateTransaction',
-            params: [
-              transaction,
-              {
-                encoding,
-                commitment,
-              },
             ],
           };
 
@@ -1654,224 +1588,6 @@ async function executeTransactionOperations(
   return returnData;
 }
 
-async function executeTokenOperations(
-  this: IExecuteFunctions,
-  items: INodeExecutionData[],
-): Promise<INodeExecutionData[]> {
-  const returnData: INodeExecutionData[] = [];
-  const operation = this.getNodeParameter('operation', 0) as string;
-  const credentials = await this.getCredentials('solanaApi') as any;
-
-  for (let i = 0; i < items.length; i++) {
-    try {
-      let result: any;
-      const commitment = this.getNodeParameter('commitment', i, 'confirmed') as string;
-
-      switch (operation) {
-        case 'getTokenAccountBalance': {
-          const pubkey = this.getNodeParameter('pubkey', i) as string;
-          
-          const requestBody = {
-            jsonrpc: '2.0',
-            id: 1,
-            method: 'getTokenAccountBalance',
-            params: [pubkey, { commitment }],
-          };
-
-          const options: any = {
-            method: 'POST',
-            url: credentials.baseUrl || 'https://api.mainnet-beta.solana.com',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: requestBody,
-            json: true,
-          };
-
-          if (credentials.apiKey) {
-            options.headers.Authorization = `Bearer ${credentials.apiKey}`;
-          }
-
-          result = await this.helpers.httpRequest(options) as any;
-          break;
-        }
-
-        case 'getTokenAccountsByOwner': {
-          const owner = this.getNodeParameter('owner', i) as string;
-          const filterByMint = this.getNodeParameter('filterByMint', i, false) as boolean;
-          const encoding = this.getNodeParameter('encoding', i, 'jsonParsed') as string;
-          
-          let filter: any;
-          if (filterByMint) {
-            const mintAddress = this.getNodeParameter('mintAddress', i) as string;
-            filter = { mint: mintAddress };
-          } else {
-            const programId = this.getNodeParameter('programId', i, 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA') as string;
-            filter = { programId };
-          }
-
-          const requestBody = {
-            jsonrpc: '2.0',
-            id: 1,
-            method: 'getTokenAccountsByOwner',
-            params: [
-              owner,
-              filter,
-              {
-                encoding,
-                commitment,
-              },
-            ],
-          };
-
-          const options: any = {
-            method: 'POST',
-            url: credentials.baseUrl || 'https://api.mainnet-beta.solana.com',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: requestBody,
-            json: true,
-          };
-
-          if (credentials.apiKey) {
-            options.headers.Authorization = `Bearer ${credentials.apiKey}`;
-          }
-
-          result = await this.helpers.httpRequest(options) as any;
-          break;
-        }
-
-        case 'getTokenAccountsByDelegate': {
-          const delegate = this.getNodeParameter('delegate', i) as string;
-          const filterByMint = this.getNodeParameter('filterByMint', i, false) as boolean;
-          const encoding = this.getNodeParameter('encoding', i, 'jsonParsed') as string;
-          
-          let filter: any;
-          if (filterByMint) {
-            const mintAddress = this.getNodeParameter('mintAddress', i) as string;
-            filter = { mint: mintAddress };
-          } else {
-            const programId = this.getNodeParameter('programId', i, 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA') as string;
-            filter = { programId };
-          }
-
-          const requestBody = {
-            jsonrpc: '2.0',
-            id: 1,
-            method: 'getTokenAccountsByDelegate',
-            params: [
-              delegate,
-              filter,
-              {
-                encoding,
-                commitment,
-              },
-            ],
-          };
-
-          const options: any = {
-            method: 'POST',
-            url: credentials.baseUrl || 'https://api.mainnet-beta.solana.com',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: requestBody,
-            json: true,
-          };
-
-          if (credentials.apiKey) {
-            options.headers.Authorization = `Bearer ${credentials.apiKey}`;
-          }
-
-          result = await this.helpers.httpRequest(options) as any;
-          break;
-        }
-
-        case 'getTokenSupply': {
-          const mint = this.getNodeParameter('mint', i) as string;
-          
-          const requestBody = {
-            jsonrpc: '2.0',
-            id: 1,
-            method: 'getTokenSupply',
-            params: [mint, { commitment }],
-          };
-
-          const options: any = {
-            method: 'POST',
-            url: credentials.baseUrl || 'https://api.mainnet-beta.solana.com',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: requestBody,
-            json: true,
-          };
-
-          if (credentials.apiKey) {
-            options.headers.Authorization = `Bearer ${credentials.apiKey}`;
-          }
-
-          result = await this.helpers.httpRequest(options) as any;
-          break;
-        }
-
-        case 'getTokenLargestAccounts': {
-          const mint = this.getNodeParameter('mint', i) as string;
-          
-          const requestBody = {
-            jsonrpc: '2.0',
-            id: 1,
-            method: 'getTokenLargestAccounts',
-            params: [mint, { commitment }],
-          };
-
-          const options: any = {
-            method: 'POST',
-            url: credentials.baseUrl || 'https://api.mainnet-beta.solana.com',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: requestBody,
-            json: true,
-          };
-
-          if (credentials.apiKey) {
-            options.headers.Authorization = `Bearer ${credentials.apiKey}`;
-          }
-
-          result = await this.helpers.httpRequest(options) as any;
-          break;
-        }
-
-        default:
-          throw new NodeOperationError(this.getNode(), `Unknown operation: ${operation}`);
-      }
-
-      if (result.error) {
-        throw new NodeApiError(this.getNode(), result.error);
-      }
-
-      returnData.push({ 
-        json: result.result || result, 
-        pairedItem: { item: i } 
-      });
-
-    } catch (error: any) {
-      if (this.continueOnFail()) {
-        returnData.push({ 
-          json: { error: error.message }, 
-          pairedItem: { item: i } 
-        });
-      } else {
-        throw error;
-      }
-    }
-  }
-
-  return returnData;
-}
-
 async function executeBlockOperations(
   this: IExecuteFunctions,
   items: INodeExecutionData[],
@@ -1910,7 +1626,7 @@ async function executeBlockOperations(
 
           const options: any = {
             method: 'POST',
-            url: credentials.baseUrl || 'https://api.mainnet-beta.solana.com',
+            url: credentials.baseUrl || credentials.rpcUrl || 'https://api.mainnet-beta.solana.com',
             headers: {
               'Content-Type': 'application/json',
             },
@@ -1942,7 +1658,7 @@ async function executeBlockOperations(
 
           const options: any = {
             method: 'POST',
-            url: credentials.baseUrl || 'https://api.mainnet-beta.solana.com',
+            url: credentials.baseUrl || credentials.rpcUrl || 'https://api.mainnet-beta.solana.com',
             headers: {
               'Content-Type': 'application/json',
             },
@@ -1966,7 +1682,7 @@ async function executeBlockOperations(
 
           const options: any = {
             method: 'POST',
-            url: credentials.baseUrl || 'https://api.mainnet-beta.solana.com',
+            url: credentials.baseUrl || credentials.rpcUrl || 'https://api.mainnet-beta.solana.com',
             headers: {
               'Content-Type': 'application/json',
             },
@@ -1990,7 +1706,7 @@ async function executeBlockOperations(
 
           const options: any = {
             method: 'POST',
-            url: credentials.baseUrl || 'https://api.mainnet-beta.solana.com',
+            url: credentials.baseUrl || credentials.rpcUrl || 'https://api.mainnet-beta.solana.com',
             headers: {
               'Content-Type': 'application/json',
             },
@@ -2014,7 +1730,7 @@ async function executeBlockOperations(
 
           const options: any = {
             method: 'POST',
-            url: credentials.baseUrl || 'https://api.mainnet-beta.solana.com',
+            url: credentials.baseUrl || credentials.rpcUrl || 'https://api.mainnet-beta.solana.com',
             headers: {
               'Content-Type': 'application/json',
             },
@@ -2038,7 +1754,7 @@ async function executeBlockOperations(
 
           const options: any = {
             method: 'POST',
-            url: credentials.baseUrl || 'https://api.mainnet-beta.solana.com',
+            url: credentials.baseUrl || credentials.rpcUrl || 'https://api.mainnet-beta.solana.com',
             headers: {
               'Content-Type': 'application/json',
             },
@@ -2087,7 +1803,7 @@ async function executeBlockOperations(
   return returnData;
 }
 
-async function executeStakingOperations(
+async function executeTokenOperations(
   this: IExecuteFunctions,
   items: INodeExecutionData[],
 ): Promise<INodeExecutionData[]> {
@@ -2098,214 +1814,129 @@ async function executeStakingOperations(
   for (let i = 0; i < items.length; i++) {
     try {
       let result: any;
-
-      const baseOptions: any = {
-        method: 'POST',
-        url: credentials.baseUrl || 'https://api.mainnet-beta.solana.com',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        json: true,
-      };
-
-      if (credentials.apiKey) {
-        baseOptions.headers['Authorization'] = `Bearer ${credentials.apiKey}`;
-      }
+      const commitment = this.getNodeParameter('commitment', i, 'confirmed') as string;
 
       switch (operation) {
-        case 'getStakeActivation': {
-          const pubkey = this.getNodeParameter('pubkey', i) as string;
-          const commitment = this.getNodeParameter('commitment', i, 'finalized') as string;
-          const epoch = this.getNodeParameter('epoch', i) as number;
-
-          const params: any = [pubkey];
-          const config: any = {};
-
-          if (commitment) {
-            config.commitment = commitment;
-          }
-
-          if (epoch !== undefined && epoch !== '') {
-            config.epoch = epoch;
-          }
-
-          if (Object.keys(config).length > 0) {
-            params.push(config);
-          }
-
-          const requestOptions = {
-            ...baseOptions,
-            body: {
-              jsonrpc: '2.0',
-              id: 1,
-              method: 'getStakeActivation',
-              params,
-            },
+        case 'getTokenAccountBalance': {
+          const pubkey = this.getNodeParameter('tokenAccount', i) as string;
+          
+          const requestBody = {
+            jsonrpc: '2.0',
+            id: 1,
+            method: 'getTokenAccountBalance',
+            params: [pubkey, { commitment }],
           };
 
-          const response = await this.helpers.httpRequest(requestOptions) as any;
+          const options: any = {
+            method: 'POST',
+            url: credentials.baseUrl || credentials.rpcUrl || 'https://api.mainnet-beta.solana.com',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: requestBody,
+            json: true,
+          };
 
-          if (response.error) {
-            throw new NodeApiError(this.getNode(), response.error);
+          if (credentials.apiKey) {
+            options.headers.Authorization = `Bearer ${credentials.apiKey}`;
           }
 
-          result = response.result;
+          result = await this.helpers.httpRequest(options) as any;
           break;
         }
 
-        case 'getVoteAccounts': {
-          const commitment = this.getNodeParameter('commitment', i, 'finalized') as string;
-          const votePubkey = this.getNodeParameter('votePubkey', i) as string;
-          const keepUnstakedDelinquents = this.getNodeParameter('keepUnstakedDelinquents', i, false) as boolean;
-
-          const config: any = {};
-
-          if (commitment) {
-            config.commitment = commitment;
-          }
-
-          if (votePubkey) {
-            config.votePubkey = votePubkey;
-          }
-
-          if (keepUnstakedDelinquents) {
-            config.keepUnstakedDelinquents = keepUnstakedDelinquents;
-          }
-
-          const params: any[] = Object.keys(config).length > 0 ? [config] : [];
-
-          const requestOptions = {
-            ...baseOptions,
-            body: {
-              jsonrpc: '2.0',
-              id: 1,
-              method: 'getVoteAccounts',
-              params,
-            },
+        case 'getTokenSupply': {
+          const mint = this.getNodeParameter('mint', i) as string;
+          
+          const requestBody = {
+            jsonrpc: '2.0',
+            id: 1,
+            method: 'getTokenSupply',
+            params: [mint, { commitment }],
           };
 
-          const response = await this.helpers.httpRequest(requestOptions) as any;
+          const options: any = {
+            method: 'POST',
+            url: credentials.baseUrl || credentials.rpcUrl || 'https://api.mainnet-beta.solana.com',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: requestBody,
+            json: true,
+          };
 
-          if (response.error) {
-            throw new NodeApiError(this.getNode(), response.error);
+          if (credentials.apiKey) {
+            options.headers.Authorization = `Bearer ${credentials.apiKey}`;
           }
 
-          result = response.result;
+          result = await this.helpers.httpRequest(options) as any;
           break;
         }
 
-        case 'getInflationReward': {
-          const addressesInput = this.getNodeParameter('addresses', i) as string;
-          const commitment = this.getNodeParameter('commitment', i, 'finalized') as string;
-          const epoch = this.getNodeParameter('epoch', i) as number;
+        case 'getTokenAccountsByDelegate': {
+          const delegate = this.getNodeParameter('delegate', i) as string;
+          const mint = this.getNodeParameter('mint', i) as string;
+          const programId = this.getNodeParameter('programId', i) as string;
 
-          const addresses = addressesInput.split(',').map((addr: string) => addr.trim());
-
-          const params: any = [addresses];
-          const config: any = {};
-
-          if (commitment) {
-            config.commitment = commitment;
+          const filters: any = { mint };
+          if (programId) {
+            filters.programId = programId;
           }
 
-          if (epoch !== undefined && epoch !== '') {
-            config.epoch = epoch;
-          }
-
-          if (Object.keys(config).length > 0) {
-            params.push(config);
-          }
-
-          const requestOptions = {
-            ...baseOptions,
-            body: {
-              jsonrpc: '2.0',
-              id: 1,
-              method: 'getInflationReward',
-              params,
-            },
+          const requestBody = {
+            jsonrpc: '2.0',
+            id: 1,
+            method: 'getTokenAccountsByDelegate',
+            params: [
+              delegate,
+              filters,
+              { commitment, encoding: 'jsonParsed' },
+            ],
           };
 
-          const response = await this.helpers.httpRequest(requestOptions) as any;
+          const options: any = {
+            method: 'POST',
+            url: credentials.baseUrl || credentials.rpcUrl || 'https://api.mainnet-beta.solana.com',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: requestBody,
+            json: true,
+          };
 
-          if (response.error) {
-            throw new NodeApiError(this.getNode(), response.error);
+          if (credentials.apiKey) {
+            options.headers.Authorization = `Bearer ${credentials.apiKey}`;
           }
 
-          result = response.result;
+          result = await this.helpers.httpRequest(options) as any;
           break;
         }
 
-        case 'getInflationRate': {
-          const requestOptions = {
-            ...baseOptions,
-            body: {
-              jsonrpc: '2.0',
-              id: 1,
-              method: 'getInflationRate',
-              params: [],
-            },
+        case 'getTokenLargestAccounts': {
+          const mint = this.getNodeParameter('mint', i) as string;
+          
+          const requestBody = {
+            jsonrpc: '2.0',
+            id: 1,
+            method: 'getTokenLargestAccounts',
+            params: [mint, { commitment }],
           };
 
-          const response = await this.helpers.httpRequest(requestOptions) as any;
-
-          if (response.error) {
-            throw new NodeApiError(this.getNode(), response.error);
-          }
-
-          result = response.result;
-          break;
-        }
-
-        case 'getInflationGovernor': {
-          const commitment = this.getNodeParameter('commitment', i, 'finalized') as string;
-
-          const config: any = {};
-
-          if (commitment) {
-            config.commitment = commitment;
-          }
-
-          const params: any[] = Object.keys(config).length > 0 ? [config] : [];
-
-          const requestOptions = {
-            ...baseOptions,
-            body: {
-              jsonrpc: '2.0',
-              id: 1,
-              method: 'getInflationGovernor',
-              params,
+          const options: any = {
+            method: 'POST',
+            url: credentials.baseUrl || credentials.rpcUrl || 'https://api.mainnet-beta.solana.com',
+            headers: {
+              'Content-Type': 'application/json',
             },
+            body: requestBody,
+            json: true,
           };
 
-          const response = await this.helpers.httpRequest(requestOptions) as any;
-
-          if (response.error) {
-            throw new NodeApiError(this.getNode(), response.error);
+          if (credentials.apiKey) {
+            options.headers.Authorization = `Bearer ${credentials.apiKey}`;
           }
 
-          result = response.result;
-          break;
-        }
-
-        case 'getEpochSchedule': {
-          const requestOptions = {
-            ...baseOptions,
-            body: {
-              jsonrpc: '2.0',
-              id: 1,
-              method: 'getEpochSchedule',
-              params: [],
-            },
-          };
-
-          const response = await this.helpers.httpRequest(requestOptions) as any;
-
-          if (response.error) {
-            throw new NodeApiError(this.getNode(), response.error);
-          }
-
-          result = response.result;
+          result = await this.helpers.httpRequest(options) as any;
           break;
         }
 
@@ -2313,21 +1944,22 @@ async function executeStakingOperations(
           throw new NodeOperationError(this.getNode(), `Unknown operation: ${operation}`);
       }
 
-      returnData.push({
-        json: result,
-        pairedItem: { item: i },
+      if (result.error) {
+        throw new NodeApiError(this.getNode(), result.error);
+      }
+
+      returnData.push({ 
+        json: result.result || result, 
+        pairedItem: { item: i } 
       });
+
     } catch (error: any) {
       if (this.continueOnFail()) {
-        returnData.push({
-          json: { error: error.message },
-          pairedItem: { item: i },
+        returnData.push({ 
+          json: { error: error.message }, 
+          pairedItem: { item: i } 
         });
       } else {
         throw error;
       }
     }
-  }
-
-  return returnData;
-}
