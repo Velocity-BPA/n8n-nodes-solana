@@ -64,6 +64,10 @@ export class Solana implements INodeType {
             value: 'token',
           },
           {
+            name: 'Nft',
+            value: 'nft',
+          },
+          {
             name: 'Program',
             value: 'program',
           },
@@ -160,6 +164,12 @@ export class Solana implements INodeType {
       description: 'Get estimated time of a block',
       action: 'Get block time',
     },
+    {
+			name: 'Get Cluster Nodes',
+			value: 'getClusterNodes',
+			description: 'Get cluster node information',
+			action: 'Get cluster node information',
+		},
 	],
 	default: 'getBlock',
 },
@@ -176,6 +186,34 @@ export class Solana implements INodeType {
     { name: 'Get Token Largest Accounts', value: 'getTokenLargestAccounts', description: 'Get largest token holders', action: 'Get token largest accounts' },
   ],
   default: 'getTokenSupply',
+},
+{
+  displayName: 'Operation',
+  name: 'operation',
+  type: 'options',
+  noDataExpression: true,
+  displayOptions: { show: { resource: ['nft'] } },
+  options: [
+    {
+      name: 'Get NFT Metadata',
+      value: 'getAccountInfo',
+      description: 'Get NFT metadata account info',
+      action: 'Get NFT metadata account info'
+    },
+    {
+      name: 'Get NFTs by Creator/Owner',
+      value: 'getProgramAccounts',
+      description: 'Get NFTs by creator or owner using metadata program',
+      action: 'Get NFTs by creator or owner'
+    },
+    {
+      name: 'Get Multiple NFT Accounts',
+      value: 'getMultipleAccounts',
+      description: 'Get multiple NFT metadata accounts',
+      action: 'Get multiple NFT metadata accounts'
+    }
+  ],
+  default: 'getAccountInfo',
 },
 {
 	displayName: 'Operation',
@@ -698,6 +736,114 @@ export class Solana implements INodeType {
   description: 'The commitment level for data consistency',
 },
 {
+  displayName: 'Metadata Address',
+  name: 'metadataAddress',
+  type: 'string',
+  required: true,
+  displayOptions: {
+    show: {
+      resource: ['nft'],
+      operation: ['getAccountInfo']
+    }
+  },
+  default: '',
+  placeholder: 'Enter NFT metadata account address (base58 encoded)',
+  description: 'The public key of the NFT metadata account'
+},
+{
+  displayName: 'Program ID',
+  name: 'programId',
+  type: 'string',
+  required: true,
+  displayOptions: {
+    show: {
+      resource: ['nft'],
+      operation: ['getProgramAccounts']
+    }
+  },
+  default: 'metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s',
+  description: 'The Metaplex Token Metadata Program ID'
+},
+{
+  displayName: 'Metadata Addresses',
+  name: 'metadataAddresses',
+  type: 'string',
+  required: true,
+  displayOptions: {
+    show: {
+      resource: ['nft'],
+      operation: ['getMultipleAccounts']
+    }
+  },
+  default: '',
+  placeholder: 'Enter comma-separated metadata addresses',
+  description: 'Comma-separated list of NFT metadata account addresses (base58 encoded)'
+},
+{
+  displayName: 'Commitment',
+  name: 'commitment',
+  type: 'options',
+  displayOptions: {
+    show: {
+      resource: ['nft'],
+      operation: ['getAccountInfo', 'getProgramAccounts', 'getMultipleAccounts']
+    }
+  },
+  options: [
+    { name: 'Processed', value: 'processed' },
+    { name: 'Confirmed', value: 'confirmed' },
+    { name: 'Finalized', value: 'finalized' }
+  ],
+  default: 'confirmed',
+  description: 'The commitment level for querying data'
+},
+{
+  displayName: 'Encoding',
+  name: 'encoding',
+  type: 'options',
+  displayOptions: {
+    show: {
+      resource: ['nft'],
+      operation: ['getAccountInfo', 'getProgramAccounts', 'getMultipleAccounts']
+    }
+  },
+  options: [
+    { name: 'Base58', value: 'base58' },
+    { name: 'Base64', value: 'base64' },
+    { name: 'JSON Parsed', value: 'jsonParsed' }
+  ],
+  default: 'base64',
+  description: 'Encoding format for account data'
+},
+{
+  displayName: 'Creator Address',
+  name: 'creatorAddress',
+  type: 'string',
+  displayOptions: {
+    show: {
+      resource: ['nft'],
+      operation: ['getProgramAccounts']
+    }
+  },
+  default: '',
+  placeholder: 'Enter creator address to filter by',
+  description: 'Filter NFTs by creator address (optional)'
+},
+{
+  displayName: 'Owner Address',
+  name: 'ownerAddress',
+  type: 'string',
+  displayOptions: {
+    show: {
+      resource: ['nft'],
+      operation: ['getProgramAccounts']
+    }
+  },
+  default: '',
+  placeholder: 'Enter owner address to filter by',
+  description: 'Filter NFTs by owner address (optional)'
+},
+{
 	displayName: 'Program ID',
 	name: 'programId',
 	type: 'string',
@@ -1014,6 +1160,8 @@ export class Solana implements INodeType {
         return [await executeBlockOperations.call(this, items)];
       case 'token':
         return [await executeTokenOperations.call(this, items)];
+      case 'nft':
+        return [await executeNftOperations.call(this, items)];
       case 'program':
         return [await executeProgramOperations.call(this, items)];
       case 'validator':
@@ -1766,6 +1914,28 @@ async function executeBlockOperations(
           break;
         }
 
+        case 'getClusterNodes': {
+          const requestBody = {
+            jsonrpc: '2.0',
+            id: 1,
+            method: 'getClusterNodes',
+            params: [],
+          };
+
+          const options: any = {
+            method: 'POST',
+            url: credentials.rpcUrl || 'https://api.mainnet-beta.solana.com',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestBody),
+            json: true,
+          };
+
+          result = await this.helpers.httpRequest(options) as any;
+          break;
+        }
+
         default:
           throw new NodeOperationError(this.getNode(), `Unknown operation: ${operation}`);
       }
@@ -1785,181 +1955,3 @@ async function executeBlockOperations(
     } catch (error: any) {
       if (this.continueOnFail()) {
         returnData.push({
-          json: { error: error.message },
-          pairedItem: { item: i },
-        });
-      } else {
-        if (error instanceof NodeApiError || error instanceof NodeOperationError) {
-          throw error;
-        }
-        throw new NodeApiError(this.getNode(), error, {
-          message: error.message,
-          description: `Failed to execute ${operation} operation`,
-        });
-      }
-    }
-  }
-
-  return returnData;
-}
-
-async function executeTokenOperations(
-  this: IExecuteFunctions,
-  items: INodeExecutionData[],
-): Promise<INodeExecutionData[]> {
-  const returnData: INodeExecutionData[] = [];
-  const operation = this.getNodeParameter('operation', 0) as string;
-  const credentials = await this.getCredentials('solanaApi') as any;
-
-  for (let i = 0; i < items.length; i++) {
-    try {
-      let result: any;
-      const commitment = this.getNodeParameter('commitment', i, 'confirmed') as string;
-
-      switch (operation) {
-        case 'getTokenAccountBalance': {
-          const pubkey = this.getNodeParameter('tokenAccount', i) as string;
-          
-          const requestBody = {
-            jsonrpc: '2.0',
-            id: 1,
-            method: 'getTokenAccountBalance',
-            params: [pubkey, { commitment }],
-          };
-
-          const options: any = {
-            method: 'POST',
-            url: credentials.baseUrl || credentials.rpcUrl || 'https://api.mainnet-beta.solana.com',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: requestBody,
-            json: true,
-          };
-
-          if (credentials.apiKey) {
-            options.headers.Authorization = `Bearer ${credentials.apiKey}`;
-          }
-
-          result = await this.helpers.httpRequest(options) as any;
-          break;
-        }
-
-        case 'getTokenSupply': {
-          const mint = this.getNodeParameter('mint', i) as string;
-          
-          const requestBody = {
-            jsonrpc: '2.0',
-            id: 1,
-            method: 'getTokenSupply',
-            params: [mint, { commitment }],
-          };
-
-          const options: any = {
-            method: 'POST',
-            url: credentials.baseUrl || credentials.rpcUrl || 'https://api.mainnet-beta.solana.com',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: requestBody,
-            json: true,
-          };
-
-          if (credentials.apiKey) {
-            options.headers.Authorization = `Bearer ${credentials.apiKey}`;
-          }
-
-          result = await this.helpers.httpRequest(options) as any;
-          break;
-        }
-
-        case 'getTokenAccountsByDelegate': {
-          const delegate = this.getNodeParameter('delegate', i) as string;
-          const mint = this.getNodeParameter('mint', i) as string;
-          const programId = this.getNodeParameter('programId', i) as string;
-
-          const filters: any = { mint };
-          if (programId) {
-            filters.programId = programId;
-          }
-
-          const requestBody = {
-            jsonrpc: '2.0',
-            id: 1,
-            method: 'getTokenAccountsByDelegate',
-            params: [
-              delegate,
-              filters,
-              { commitment, encoding: 'jsonParsed' },
-            ],
-          };
-
-          const options: any = {
-            method: 'POST',
-            url: credentials.baseUrl || credentials.rpcUrl || 'https://api.mainnet-beta.solana.com',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: requestBody,
-            json: true,
-          };
-
-          if (credentials.apiKey) {
-            options.headers.Authorization = `Bearer ${credentials.apiKey}`;
-          }
-
-          result = await this.helpers.httpRequest(options) as any;
-          break;
-        }
-
-        case 'getTokenLargestAccounts': {
-          const mint = this.getNodeParameter('mint', i) as string;
-          
-          const requestBody = {
-            jsonrpc: '2.0',
-            id: 1,
-            method: 'getTokenLargestAccounts',
-            params: [mint, { commitment }],
-          };
-
-          const options: any = {
-            method: 'POST',
-            url: credentials.baseUrl || credentials.rpcUrl || 'https://api.mainnet-beta.solana.com',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: requestBody,
-            json: true,
-          };
-
-          if (credentials.apiKey) {
-            options.headers.Authorization = `Bearer ${credentials.apiKey}`;
-          }
-
-          result = await this.helpers.httpRequest(options) as any;
-          break;
-        }
-
-        default:
-          throw new NodeOperationError(this.getNode(), `Unknown operation: ${operation}`);
-      }
-
-      if (result.error) {
-        throw new NodeApiError(this.getNode(), result.error);
-      }
-
-      returnData.push({ 
-        json: result.result || result, 
-        pairedItem: { item: i } 
-      });
-
-    } catch (error: any) {
-      if (this.continueOnFail()) {
-        returnData.push({ 
-          json: { error: error.message }, 
-          pairedItem: { item: i } 
-        });
-      } else {
-        throw error;
-      }
-    }
