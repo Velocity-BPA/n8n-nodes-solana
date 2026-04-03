@@ -3,56 +3,62 @@ import { ICredentialType, INodeProperties } from 'n8n-workflow';
 export class SolanaApi implements ICredentialType {
 	name = 'solanaApi';
 	displayName = 'Solana API';
-	documentationUrl = 'https://docs.solana.com/api';
 	properties: INodeProperties[] = [
 		{
-			displayName: 'RPC Provider',
-			name: 'provider',
-			type: 'options',
-			options: [
-				{
-					name: 'Solana Mainnet (Public)',
-					value: 'public',
-				},
-				{
-					name: 'QuickNode',
-					value: 'quicknode',
-				},
-				{
-					name: 'Alchemy',
-					value: 'alchemy',
-				},
-				{
-					name: 'Helius',
-					value: 'helius',
-				},
-				{
-					name: 'Custom',
-					value: 'custom',
-				},
-			],
-			default: 'public',
-		},
-		{
-			displayName: 'RPC URL',
+			displayName: 'RPC Endpoint URL',
 			name: 'rpcUrl',
 			type: 'string',
 			default: 'https://api.mainnet-beta.solana.com',
+			description: 'Solana RPC endpoint URL. Use custom endpoints from providers like QuickNode, Alchemy, or Helius for better performance.',
 			required: true,
-			description: 'The Solana RPC endpoint URL',
+		},
+		{
+			displayName: 'Authentication Method',
+			name: 'authMethod',
+			type: 'options',
+			options: [
+				{
+					name: 'None (Public Endpoint)',
+					value: 'none',
+				},
+				{
+					name: 'API Key in Header',
+					value: 'header',
+				},
+				{
+					name: 'API Key in URL',
+					value: 'url',
+				},
+			],
+			default: 'none',
+			description: 'How to authenticate with the RPC provider',
 		},
 		{
 			displayName: 'API Key',
 			name: 'apiKey',
 			type: 'string',
-			typeOptions: { password: true },
+			typeOptions: {
+				password: true,
+			},
 			default: '',
+			description: 'API key for authentication (if required by your RPC provider)',
 			displayOptions: {
 				show: {
-					provider: ['quicknode', 'alchemy', 'helius'],
+					authMethod: ['header', 'url'],
 				},
 			},
-			description: 'API key for the RPC provider',
+		},
+		{
+			displayName: 'Header Name',
+			name: 'headerName',
+			type: 'string',
+			default: 'X-API-Key',
+			description: 'Name of the header to send the API key in',
+			displayOptions: {
+				show: {
+					authMethod: ['header'],
+				},
+			},
 		},
 	];
 }
