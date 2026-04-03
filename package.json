@@ -3,13 +3,17 @@
   "version": "1.0.0",
   "description": "n8n community node for Solana blockchain operations",
   "keywords": [
-    "n8n-community-node-package"
+    "n8n-community-node-package",
+    "solana",
+    "blockchain",
+    "crypto",
+    "web3"
   ],
   "license": "bsl-catalog",
-  "homepage": "",
+  "homepage": "https://n8n.io",
   "author": {
     "name": "Velocity BPA",
-    "email": "support@velocity-bpa.com"
+    "email": "info@velocitybpa.com"
   },
   "repository": {
     "type": "git",
@@ -43,6 +47,7 @@
   "devDependencies": {
     "@typescript-eslint/parser": "^7.15.0",
     "@typescript-eslint/eslint-plugin": "^7.15.0",
+    "@types/node": "^20.14.8",
     "eslint": "^8.56.0",
     "eslint-plugin-n8n-nodes-base": "^1.16.1",
     "gulp": "^4.0.2",
@@ -54,6 +59,6 @@
     "n8n-workflow": "*"
   },
   "dependencies": {
-    "axios": "^1.7.4"
+    "axios": "^1.7.2"
   }
 }
